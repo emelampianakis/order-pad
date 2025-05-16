@@ -8,15 +8,21 @@
     left: 16px;
     z-index: 1000;
   }
-
+  .header-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: linear-gradient(to top, #0c4a6e, #06b6d4);
+  }
   .header-card {
+    color: black;
     position: relative;
     z-index: 2;
     margin: 40px auto 0;
     width: 50%;
     max-width: 500px;
-    background: gray;
-    border-radius: 12px;
+    background: white;
+    border-radius: 10px;
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     text-align: center;

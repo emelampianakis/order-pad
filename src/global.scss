@@ -56,14 +56,13 @@
   align-items: center;
   background-color: #d9d9d966;
   border-radius: 18px;
-
   overflow: hidden; /* hide border radius on currency */
   height: 30px;
   min-width: 80px;
 }
 
 .price-text {
-  padding: 0 16px;
+  padding-left: 8px;
   flex-grow: 1;
   white-space: nowrap;
   overflow: hidden;

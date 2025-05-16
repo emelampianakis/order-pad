@@ -1,21 +1,29 @@
 <ion-content class="table-details-content" fullscreen>
   <!-- Back Button -->
-  <ion-button fill="clear" class="back-btn" (click)="goBack()">
-    <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+
+  <ion-button
+    fill="outline"
+    (click)="goBack()"
+    shape="round"
+    class="light-button back-btn"
+  >
+    <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
   </ion-button>
 
   <!-- Fixed Header -->
-  <div class="header-card">
-    <div class="table-info">
-      <div class="status">
-        <span class="status-dot" [ngClass]="table.status"></span>
-        {{ table.status }}
+  <div class="header-container">
+    <div class="header-card">
+      <div class="table-info">
+        <div class="status">
+          <span class="status-dot" [ngClass]="table.status"></span>
+          {{ table.status }}
+        </div>
+        <div class="user">
+          <ion-icon name="person-circle-outline"></ion-icon>{{ table.user }}
+        </div>
       </div>
-      <div class="user">
-        <ion-icon name="person-circle-outline"></ion-icon>{{ table.user }}
-      </div>
+      <div class="table-name">{{ table.name }}</div>
     </div>
-    <div class="table-name">{{ table.name }}</div>
   </div>
 
   <!-- Bottom Sheet Style Container -->
@@ -34,7 +42,14 @@
               <div class="order-time">{{ order.time }}</div>
               <div class="order-meta">
                 <span>{{ order.date }}</span>
-                <span> {{ order.user }} - {{ order.price | currency }} </span>
+                <span style="display: flex; gap: 8px">
+                  <div class="user">
+                    <ion-icon name="person-circle-outline"></ion-icon
+                    >{{ order.user }}
+                  </div>
+                  <span>- </span>
+                  {{ order.price | currency }}
+                </span>
               </div>
             </ion-label>
           </ion-item>
