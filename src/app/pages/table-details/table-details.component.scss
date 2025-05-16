@@ -41,13 +41,18 @@
           background-color: #666;
 
           &.open {
-            background-color: #10dc60;
+            background-color: #28a745;
+            box-shadow: 0 0 8px #28a745aa;
           }
+
           &.closed {
-            background-color: #eb445a;
+            background-color: #dc3545;
+            box-shadow: 0 0 8px #dc3545aa;
           }
+
           &.reserved {
-            background-color: #ffc409;
+            background-color: #ffc107;
+            box-shadow: 0 0 8px #ffc107aa;
           }
         }
       }
@@ -74,7 +79,7 @@
     right: 0;
     bottom: 0;
     top: 100px; // distance from top of content to header bottom
-    background: lightgray;
+    background: #E1EFF4;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
     padding: 32px 16px 80px;
@@ -91,6 +96,9 @@
         padding: 8px 16px;
         border-radius: 12px 12px 0 0;
         display: inline-block;
+      }
+      ion-list {
+        border-radius: 0 8px 8px 8px;
       }
 
       .order-label {
