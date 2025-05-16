@@ -1,0 +1,7 @@
+{
+  "name": "order-pad",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
