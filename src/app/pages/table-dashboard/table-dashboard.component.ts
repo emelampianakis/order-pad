@@ -3,6 +3,7 @@ import { IonicModule } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
+import { AlertController } from "@ionic/angular";
 
 interface Table {
   id: number;
@@ -115,7 +116,10 @@ export class TableDashboardComponent {
     },
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private alertCtrl: AlertController
+  ) {}
 
   get filteredTables(): Table[] {
     return this.tables
@@ -128,14 +132,13 @@ export class TableDashboardComponent {
   }
 
   get currentIcon(): string {
-    // Using existing valid ionicons
     switch (this.columns) {
       case 1:
-        return "list-outline"; // 1 column
+        return "list-outline";
       case 2:
-        return "grid-outline"; // 2 columns
+        return "grid-outline";
       case 3:
-        return "apps-outline"; // 3 columns
+        return "apps-outline";
       default:
         return "list-outline";
     }
@@ -155,7 +158,25 @@ export class TableDashboardComponent {
     this.router.navigate(["/table", id]);
   }
 
-  logOut() {
-    this.router.navigate([""]);
+  async logOut() {
+    const alert = await this.alertCtrl.create({
+      header: "Confirm Logout",
+      message: "Are you sure you want to log out?",
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          handler: () => {},
+        },
+        {
+          text: "Log Out",
+          handler: () => {
+            this.router.navigate([""]);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }
