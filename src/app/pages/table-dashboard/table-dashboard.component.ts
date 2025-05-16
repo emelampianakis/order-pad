@@ -133,9 +133,9 @@ export class TableDashboardComponent {
       case 1:
         return "list-outline"; // 1 column
       case 2:
-        return "apps-outline"; // 2 columns
+        return "grid-outline"; // 2 columns
       case 3:
-        return "grid-outline"; // 3 columns
+        return "apps-outline"; // 3 columns
       default:
         return "list-outline";
     }

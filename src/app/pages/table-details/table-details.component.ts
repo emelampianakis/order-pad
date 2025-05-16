@@ -3,6 +3,8 @@ import { Component, OnInit } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
+import { ModalController } from "@ionic/angular";
+import { AddOrderModalComponent } from "../../components/add-order-modal.component";
 
 @Component({
   selector: "app-table-details",
@@ -173,7 +175,8 @@ export class TableDetailsComponent implements OnInit {
 
   constructor(
     private location: Location,
-    private router: Router
+    private router: Router,
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {}
@@ -184,5 +187,15 @@ export class TableDetailsComponent implements OnInit {
 
   goToOrderDetails(order: any) {
     this.router.navigate(["/order", order.id]);
+  }
+
+  async openAddOrderModal() {
+    const modal = await this.modalCtrl.create({
+      component: AddOrderModalComponent,
+      breakpoints: [0, 0.2, 0.8],
+      initialBreakpoint: 0.8,
+      handle: true,
+    });
+    return await modal.present();
   }
 }
