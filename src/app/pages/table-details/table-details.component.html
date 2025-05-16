@@ -26,12 +26,13 @@
             *ngFor="let order of group.orders"
             lines="none"
             detail="true"
+            (click)="goToOrderDetails(order)"
           >
             <ion-label class="order-label">
               <div class="order-time">{{ order.time }}</div>
               <div class="order-meta">
                 <span>{{ order.date }}</span>
-                {{ order.user }} – {{ order.price | currency }}
+                <span> {{ order.user }} - {{ order.price | currency }} </span>
               </div>
             </ion-label>
           </ion-item>

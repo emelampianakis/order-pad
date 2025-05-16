@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { Location } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-table-details",
@@ -14,13 +15,14 @@ import { Location } from "@angular/common";
 export class TableDetailsComponent implements OnInit {
   table = {
     name: "Table 7",
-    status: "open",
+    status: "closed",
     user: "John D.",
     orderGroups: [
       {
         total: 42.5,
         orders: [
           {
+            id: 1213123,
             time: "14:12",
             date: "2025-05-16",
             orderId: "12345",
@@ -28,6 +30,7 @@ export class TableDetailsComponent implements OnInit {
             user: "John D.",
           },
           {
+            id: 1213124,
             time: "14:14",
             date: "2025-05-16",
             orderId: "sadasdad",
@@ -40,6 +43,8 @@ export class TableDetailsComponent implements OnInit {
         total: 42.5,
         orders: [
           {
+            id: 1213123,
+
             time: "14:12",
             date: "2025-05-16",
             orderId: "12345",
@@ -47,6 +52,7 @@ export class TableDetailsComponent implements OnInit {
             user: "John D.",
           },
           {
+            id: 1213124,
             time: "14:14",
             date: "2025-05-16",
             orderId: "sadasdad",
@@ -59,6 +65,8 @@ export class TableDetailsComponent implements OnInit {
         total: 42.5,
         orders: [
           {
+            id: 1213123,
+
             time: "14:12",
             date: "2025-05-16",
             orderId: "12345",
@@ -66,6 +74,7 @@ export class TableDetailsComponent implements OnInit {
             user: "John D.",
           },
           {
+            id: 1213124,
             time: "14:14",
             date: "2025-05-16",
             orderId: "sadasdad",
@@ -78,6 +87,7 @@ export class TableDetailsComponent implements OnInit {
         total: 42.5,
         orders: [
           {
+            id: 1213123,
             time: "14:12",
             date: "2025-05-16",
             orderId: "12345",
@@ -85,6 +95,7 @@ export class TableDetailsComponent implements OnInit {
             user: "John D.",
           },
           {
+            id: 1213124,
             time: "14:14",
             date: "2025-05-16",
             orderId: "sadasdad",
@@ -97,6 +108,8 @@ export class TableDetailsComponent implements OnInit {
         total: 42.5,
         orders: [
           {
+            id: 1213123,
+
             time: "14:12",
             date: "2025-05-16",
             orderId: "12345",
@@ -104,6 +117,7 @@ export class TableDetailsComponent implements OnInit {
             user: "John D.",
           },
           {
+            id: 1213124,
             time: "14:14",
             date: "2025-05-16",
             orderId: "sadasdad",
@@ -116,6 +130,7 @@ export class TableDetailsComponent implements OnInit {
         total: 42.5,
         orders: [
           {
+            id: 1213123,
             time: "14:12",
             date: "2025-05-16",
             orderId: "12345",
@@ -123,6 +138,7 @@ export class TableDetailsComponent implements OnInit {
             user: "John D.",
           },
           {
+            id: 1213124,
             time: "14:14",
             date: "2025-05-16",
             orderId: "sadasdad",
@@ -135,6 +151,7 @@ export class TableDetailsComponent implements OnInit {
         total: 28,
         orders: [
           {
+            id: 1213123,
             time: "14:30",
             date: "2025-05-16",
             orderId: "1231323",
@@ -142,6 +159,7 @@ export class TableDetailsComponent implements OnInit {
             user: "Eve",
           },
           {
+            id: 1213124,
             time: "14:33",
             date: "2025-05-16",
             orderId: "41424",
@@ -153,11 +171,18 @@ export class TableDetailsComponent implements OnInit {
     ],
   };
 
-  constructor(private location: Location) {}
+  constructor(
+    private location: Location,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
   goBack() {
     this.location.back();
+  }
+
+  goToOrderDetails(order: any) {
+    this.router.navigate(["/order", order.id]);
   }
 }

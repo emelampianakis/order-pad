@@ -1,0 +1,50 @@
+<ion-content class="table-details-content" fullscreen>
+  <!-- Back Button -->
+  <ion-button fill="clear" class="back-btn" (click)="goBack()">
+    <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+  </ion-button>
+
+  <!-- Header Card -->
+  <div class="header-card">
+    <div class="table-info">
+      <div class="status">
+        <span class="status-dot" [ngClass]="order.status"></span>
+        {{ order.status }}
+      </div>
+      <div class="user">{{ order.user }}</div>
+    </div>
+    <div class="table-name">{{ order.tableName }}</div>
+  </div>
+
+  <!-- Sheet Container -->
+  <div class="sheet-container">
+    <!-- Order Meta -->
+    <div class="order-meta-top">
+      <div class="created-at">Created at: {{ order.date }}</div>
+      <div class="total">{{ order.total | currency }}</div>
+    </div>
+
+    <div class="order-id">Order ID: #{{ order.id }}</div>
+
+    <!-- Products List -->
+    <div class="products-section">
+      <h3>Products</h3>
+      <ion-list mode="ios" lines="none">
+        <ion-item *ngFor="let product of order.products">
+          <ion-label>
+            <div class="product-name">{{ product.name }}</div>
+            <div class="product-meta">
+              Quantity: {{ product.quantity }} &nbsp;|&nbsp; Price:
+              {{ product.price | currency }}
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+    <ion-button
+      style="position: absolute; bottom: 16px; width: 80%; left: 10%"
+      expand="block"
+      >Delete Order</ion-button
+    >
+  </div>
+</ion-content>
