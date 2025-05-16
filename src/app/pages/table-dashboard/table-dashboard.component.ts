@@ -28,7 +28,7 @@ export class TableDashboardComponent {
   columns = 1;
 
   statuses = ["open", "closed", "reserved"];
-
+  currency = "€";
   tables: Table[] = [
     {
       id: 1,

@@ -34,4 +34,53 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+@import "@ionic/angular/css/palettes/dark.system.css";
+
+.light-button {
+  --background: #7dd3fce5;
+  color: black;
+  --border-color: transparent;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #a8adb5;
+}
+
+.price {
+  display: inline-flex;
+  align-items: center;
+  background-color: #d9d9d966;
+  border-radius: 18px;
+
+  overflow: hidden; /* hide border radius on currency */
+  height: 30px;
+  min-width: 80px;
+}
+
+.price-text {
+  padding: 0 16px;
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.currency {
+  background-color: #7dd3fcb2;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.table-name {
+  font-size: 22px;
+}

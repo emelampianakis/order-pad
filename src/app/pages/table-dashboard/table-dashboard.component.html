@@ -4,17 +4,29 @@
     <div class="dashboard-header">
       <div class="header-bar">
         <div>
-          <h2 style="display: flex; align-items: center; gap: 16px">
-            <ion-button fill="outline" (click)="logOut()" shape="round">
-              <ion-icon
-                name="log-out-outline"
-                slot="icon-only"
-              ></ion-icon> </ion-button
-            >Hello, {{ username }}
-          </h2>
-          <p>Select a table</p>
+          <div style="display: flex; align-items: center; gap: 16px">
+            <ion-button
+              fill="outline"
+              (click)="logOut()"
+              shape="round"
+              class="light-button"
+            >
+              <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <div style="display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 22px">
+                Hello,
+                <span style="font-weight: bold">{{ username }} </span></span
+              ><span>Slect a table</span>
+            </div>
+          </div>
         </div>
-        <ion-button fill="outline" (click)="cycleColumns()" shape="round">
+        <ion-button
+          fill="outline"
+          (click)="cycleColumns()"
+          shape="round"
+          class="light-button"
+        >
           <ion-icon [name]="currentIcon" slot="icon-only"></ion-icon>
         </ion-button>
       </div>
@@ -29,8 +41,9 @@
       <ion-searchbar
         [(ngModel)]="searchTerm"
         debounce="300"
-        placeholder="Search tables"
-        class="custom"
+        placeholder="Search Tables"
+        class="custom-searchbar"
+        mode="ios"
       ></ion-searchbar>
     </div>
 
@@ -58,28 +71,53 @@
                 </div>
               </div>
               <div class="info-row">
-                <div>User {{ table.user }}</div>
+                <div class="user">
+                  <ion-icon name="person-circle-outline"></ion-icon
+                  >{{ table.user }}
+                </div>
+
                 <div class="table-meta">
-                  <span>{{ table.name }}</span>
-                  <span class="price">{{ table.price | currency }}</span>
+                  <span class="table-name">{{ table.name }}</span>
+                  <div class="price">
+                    <span class="price-text">{{ table.price }}</span>
+                    <span class="currency">{{ currency }}</span>
+                  </div>
                 </div>
               </div>
             </ng-container>
 
             <!-- View 2 -->
             <ng-container *ngIf="columns === 2">
-              <div class="status-dot" [ngClass]="table.status"></div>
-              <div>User {{ table.user }}</div>
-              <div>{{ table.name }}</div>
-              <div class="price">{{ table.price | currency }}</div>
+              <div style="display: flex; align-items: center; gap: 8px">
+                <div class="status-dot" [ngClass]="table.status"></div>
+                {{ table.status }}
+              </div>
+
+              <div class="table-name">{{ table.name }}</div>
+
+              <div class="user">
+                <ion-icon name="person-circle-outline"></ion-icon
+                >{{ table.user }}
+              </div>
+              <div class="price">
+                <span class="price-text">{{ table.price }}</span>
+                <span class="currency">{{ currency }}</span>
+              </div>
             </ng-container>
 
             <!-- View 3 -->
             <ng-container *ngIf="columns === 3">
               <div class="status-bar" [ngClass]="table.status"></div>
-              <div>User {{ table.user }}</div>
-              <div>{{ table.name }}</div>
-              <div class="price">{{ table.price | currency }}</div>
+              <div class="table-name">{{ table.name }}</div>
+
+              <div class="user">
+                <ion-icon name="person-circle-outline"></ion-icon
+                >{{ table.user }}
+              </div>
+              <div class="price">
+                <span class="price-text">{{ table.price }}</span>
+                <span class="currency">{{ currency }}</span>
+              </div>
             </ng-container>
           </div>
         </ng-container>
