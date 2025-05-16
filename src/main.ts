@@ -19,6 +19,8 @@ import {
   gridOutline,
   chevronBackOutline,
   add,
+  logOutOutline,
+  personCircleOutline,
 } from "ionicons/icons";
 
 addIcons({
@@ -27,6 +29,8 @@ addIcons({
   "grid-outline": gridOutline,
   "chevron-back-outline": chevronBackOutline,
   add: add,
+  "log-out-outline": logOutOutline,
+  "person-circle-outline": personCircleOutline,
 });
 bootstrapApplication(AppComponent, {
   providers: [

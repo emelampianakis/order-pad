@@ -11,7 +11,9 @@
         <span class="status-dot" [ngClass]="order.status"></span>
         {{ order.status }}
       </div>
-      <div class="user">{{ order.user }}</div>
+      <div class="user">
+        <ion-icon name="person-circle-outline"></ion-icon>{{ order.user }}
+      </div>
     </div>
     <div class="table-name">{{ order.tableName }}</div>
   </div>

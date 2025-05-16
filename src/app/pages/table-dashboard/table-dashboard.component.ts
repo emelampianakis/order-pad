@@ -154,4 +154,8 @@ export class TableDashboardComponent {
   goToTableDetails(id: number) {
     this.router.navigate(["/table", id]);
   }
+
+  logOut() {
+    this.router.navigate([""]);
+  }
 }

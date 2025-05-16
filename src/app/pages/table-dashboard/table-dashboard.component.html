@@ -4,7 +4,14 @@
     <div class="dashboard-header">
       <div class="header-bar">
         <div>
-          <h2>Hello, {{ username }}</h2>
+          <h2 style="display: flex; align-items: center; gap: 16px">
+            <ion-button fill="outline" (click)="logOut()" shape="round">
+              <ion-icon
+                name="log-out-outline"
+                slot="icon-only"
+              ></ion-icon> </ion-button
+            >Hello, {{ username }}
+          </h2>
           <p>Select a table</p>
         </div>
         <ion-button fill="outline" (click)="cycleColumns()" shape="round">
