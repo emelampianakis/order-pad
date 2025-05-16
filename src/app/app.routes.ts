@@ -1,13 +1,10 @@
-import { Routes } from '@angular/router';
+import { Routes } from "@angular/router";
+import { LoginComponent } from "./pages/login.component";
 
 export const routes: Routes = [
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    path: "",
+    component: LoginComponent,
   },
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
+  // You can add other routes later for your app after login
 ];
