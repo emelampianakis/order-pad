@@ -18,6 +18,7 @@ import {
   appsOutline,
   gridOutline,
   chevronBackOutline,
+  add,
 } from "ionicons/icons";
 
 addIcons({
@@ -25,6 +26,7 @@ addIcons({
   "apps-outline": appsOutline,
   "grid-outline": gridOutline,
   "chevron-back-outline": chevronBackOutline,
+  add: add,
 });
 bootstrapApplication(AppComponent, {
   providers: [
