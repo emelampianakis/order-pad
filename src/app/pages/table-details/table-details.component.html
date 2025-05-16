@@ -1,3 +1,42 @@
-<p>
-  table-details works!
-</p>
+<ion-content class="table-details-content" fullscreen>
+  <!-- Back Button -->
+  <ion-button fill="clear" class="back-btn" (click)="goBack()">
+    <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+  </ion-button>
+
+  <!-- Fixed Header -->
+  <div class="header-card">
+    <div class="table-info">
+      <div class="status">
+        <span class="status-dot" [ngClass]="table.status"></span>
+        {{ table.status }}
+      </div>
+      <div class="user">{{ table.user }}</div>
+    </div>
+    <div class="table-name">{{ table.name }}</div>
+  </div>
+
+  <!-- Bottom Sheet Style Container -->
+  <div class="sheet-container">
+    <ng-container *ngFor="let group of table.orderGroups">
+      <div class="order-group">
+        <div class="group-total">{{ group.total | currency }}</div>
+        <ion-list mode="ios">
+          <ion-item
+            *ngFor="let order of group.orders"
+            lines="none"
+            detail="true"
+          >
+            <ion-label class="order-label">
+              <div class="order-time">{{ order.time }}</div>
+              <div class="order-meta">
+                <span>{{ order.date }}</span>
+                {{ order.user }} – {{ order.price | currency }}
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ng-container>
+  </div>
+</ion-content>

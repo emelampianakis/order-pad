@@ -8,6 +8,11 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   { path: "dashboard", component: TableDashboardComponent },
-
-  // You can add other routes later for your app after login
+  {
+    path: "table/:id",
+    loadComponent: () =>
+      import("./pages/table-details/table-details.component").then(
+        (m) => m.TableDetailsComponent
+      ),
+  },
 ];

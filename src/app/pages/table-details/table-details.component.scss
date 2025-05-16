@@ -1,0 +1,109 @@
+.table-details-content {
+  --padding-top: 0;
+  position: relative;
+
+  ion-button.back-btn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1000;
+  }
+
+  .header-card {
+    position: relative;
+    z-index: 2;
+    margin: 72px auto 0;
+    width: 50%;
+    max-width: 500px;
+    background: gray;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    text-align: center;
+
+    .table-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+
+      .status {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        text-transform: capitalize;
+
+        .status-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          margin-right: 8px;
+          background-color: #666;
+
+          &.open {
+            background-color: #10dc60;
+          }
+          &.closed {
+            background-color: #eb445a;
+          }
+          &.reserved {
+            background-color: #ffc409;
+          }
+        }
+      }
+
+      .user {
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+
+    .table-name {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+  }
+
+  .sheet-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 140px; // distance from top of content to header bottom
+    background: lightgray;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 32px 16px 80px;
+    overflow-y: auto;
+    z-index: 1;
+
+    .order-group {
+      margin-bottom: 24px;
+
+      .group-total {
+        background: black;
+        font-weight: bold;
+        font-size: 13px;
+        padding: 8px 16px;
+        border-radius: 12px 12px 0 0;
+        display: inline-block;
+      }
+
+      .order-label {
+        display: flex;
+        flex-direction: column;
+
+        .order-time {
+          font-size: 16px;
+          font-weight: 600;
+        }
+
+        .order-meta {
+          font-size: 13px;
+          color: #555;
+        }
+      }
+    }
+  }
+}

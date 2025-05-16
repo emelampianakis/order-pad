@@ -13,12 +13,18 @@ import {
 import { routes } from "./app/app.routes";
 import { AppComponent } from "./app/app.component";
 import { addIcons } from "ionicons";
-import { listOutline, appsOutline, gridOutline } from "ionicons/icons";
+import {
+  listOutline,
+  appsOutline,
+  gridOutline,
+  chevronBackOutline,
+} from "ionicons/icons";
 
 addIcons({
   "list-outline": listOutline,
   "apps-outline": appsOutline,
   "grid-outline": gridOutline,
+  "chevron-back-outline": chevronBackOutline,
 });
 bootstrapApplication(AppComponent, {
   providers: [

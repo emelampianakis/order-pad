@@ -1,101 +1,137 @@
-.table-grid {
-  display: grid;
-  gap: 8px;
-}
+.dashboard-content {
+  --padding-top: 0;
+  --padding-bottom: 0;
 
-.table-card {
-  background: var(--ion-color-light);
-  border-radius: 8px;
-  padding: 12px 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  .dashboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
 
-  &.view-1 {
-    .status-row {
+  .dashboard-header {
+    padding: 16px;
+    background: black;
+
+    .header-bar {
       display: flex;
-      gap: 8px;
-      margin-bottom: 8px;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-      .status-pill {
-        padding: 4px 10px;
-        border-radius: 16px;
-        font-size: 13px;
-        text-transform: capitalize;
-        color: #555;
-        background-color: #eee;
-        &.active {
-          color: white;
-          font-weight: bold;
+    ion-segment {
+      margin: 8px 0;
+    }
 
-          &.open {
-            background-color: #10dc60;
+    ion-searchbar {
+      margin-top: 8px;
+    }
+  }
+
+  .tables-container {
+    flex: 1;
+    overflow-y: auto;
+    background: grey;
+    padding: 20px 16px 8px 16px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  .table-grid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .table-card {
+    background: var(--ion-color-light);
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+    &.view-1 {
+      .status-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 8px;
+
+        .status-pill {
+          padding: 4px 10px;
+          border-radius: 16px;
+          font-size: 13px;
+          text-transform: capitalize;
+          color: #555;
+          background-color: #eee;
+
+          &.active {
+            color: white;
+            font-weight: bold;
+
+            &.open {
+              background-color: #10dc60;
+            }
+
+            &.closed {
+              background-color: #eb445a;
+            }
+
+            &.reserved {
+              background-color: #ffc409;
+            }
           }
+        }
+      }
 
-          &.closed {
-            background-color: #eb445a;
-          }
+      .info-row {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
 
-          &.reserved {
-            background-color: #ffc409;
-          }
+        .table-meta {
+          display: flex;
+          justify-content: space-between;
         }
       }
     }
 
-    .info-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    &.view-2 {
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-bottom: 6px;
 
-      .table-meta {
-        display: flex;
-        justify-content: space-between;
+        &.open {
+          background-color: #10dc60;
+        }
+
+        &.closed {
+          background-color: #ff3b30;
+        }
+
+        &.reserved {
+          background-color: #ff9500;
+        }
+      }
+    }
+
+    &.view-3 {
+      .status-bar {
+        height: 4px;
+        width: 100%;
+        border-radius: 2px;
+        margin-bottom: 6px;
+
+        &.open {
+          background-color: #10dc60;
+        }
+
+        &.closed {
+          background-color: #ff3b30;
+        }
+
+        &.reserved {
+          background-color: #ff9500;
+        }
       }
     }
   }
-
-  &.view-2 {
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin-bottom: 6px;
-
-      &.open {
-        background-color: #10dc60;
-      }
-      &.closed {
-        background-color: #ff3b30;
-      }
-      &.reserved {
-        background-color: #ff9500;
-      }
-    }
-  }
-
-  &.view-3 {
-    .status-bar {
-      height: 4px;
-      width: 100%;
-      border-radius: 2px;
-      margin-bottom: 6px;
-
-      &.open {
-        background-color: #10dc60;
-      }
-      &.closed {
-        background-color: #ff3b30;
-      }
-      &.reserved {
-        background-color: #ff9500;
-      }
-    }
-  }
-}
-
-.tables-container {
-  background: grey;
-  height: 100%;
-  padding: 20px 16px 8px 16px;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
 }
