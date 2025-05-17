@@ -1,10 +1,16 @@
 import { Component } from "@angular/core";
-import { IonicModule } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AlertController } from "@ionic/angular";
-
+import {
+  IonContent,
+  IonButton,
+  IonIcon,
+  IonSegment,
+  IonSegmentButton,
+  IonSearchbar,
+} from "@ionic/angular/standalone";
 interface Table {
   id: number;
   name: string;
@@ -16,7 +22,16 @@ interface Table {
 @Component({
   selector: "app-table-dashboard",
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonSegment,
+    IonSegmentButton,
+    IonSearchbar,
+  ],
   templateUrl: "./table-dashboard.component.html",
   styleUrls: ["./table-dashboard.component.scss"],
 })

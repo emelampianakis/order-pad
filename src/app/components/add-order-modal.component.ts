@@ -1,8 +1,19 @@
 // add-order-modal.component.ts
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
-import { IonicModule, ModalController } from "@ionic/angular";
-
+import { ModalController } from "@ionic/angular";
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonList,
+  IonItem,
+  IonLabel,
+} from "@ionic/angular/standalone";
 @Component({
   selector: "app-add-order-modal",
   template: `
@@ -62,7 +73,19 @@ import { IonicModule, ModalController } from "@ionic/angular";
     </ion-content>
   `,
   standalone: true,
-  imports: [CommonModule, IonicModule], // ✅ Required for template
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel,
+  ],
 })
 export class AddOrderModalComponent {
   page: "categories" | "subcategories" | "products" = "categories";

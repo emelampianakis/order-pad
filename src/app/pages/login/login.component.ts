@@ -5,14 +5,14 @@ import {
   Validators,
   ReactiveFormsModule,
 } from "@angular/forms";
-import { IonicModule, ToastController } from "@ionic/angular";
+import { ToastController } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
-
+import { IonContent, IonInput, IonButton } from "@ionic/angular/standalone";
 @Component({
   selector: "app-login",
   standalone: true,
-  imports: [CommonModule, IonicModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, IonContent, IonInput, IonButton],
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })

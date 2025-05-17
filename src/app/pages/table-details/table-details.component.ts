@@ -1,17 +1,34 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { IonicModule } from "@ionic/angular";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { ModalController } from "@ionic/angular";
 import { AddOrderModalComponent } from "../../components/add-order-modal.component";
-
+import {
+  IonContent,
+  IonButton,
+  IonIcon,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonFab,
+  IonFabButton,
+} from "@ionic/angular/standalone";
 @Component({
   selector: "app-table-details",
   templateUrl: "./table-details.component.html",
   styleUrls: ["./table-details.component.scss"],
-  imports: [CommonModule, IonicModule], // ✅ Required for template
-
+  imports: [
+    CommonModule,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonFab,
+    IonFabButton,
+  ],
   standalone: true,
 })
 export class TableDetailsComponent implements OnInit {

@@ -1,15 +1,30 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { IonicModule } from "@ionic/angular";
 import { Location } from "@angular/common";
 import { AlertController } from "@ionic/angular";
-
+import {
+  IonContent,
+  IonButton,
+  IonIcon,
+  IonList,
+  IonItem,
+  IonLabel,
+} from "@ionic/angular/standalone";
 @Component({
   selector: "app-order-details",
   templateUrl: "./order-details.component.html",
   styleUrls: ["./order-details.component.scss"],
-  imports: [CommonModule, IonicModule],
+  imports: [
+    CommonModule,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonList,
+    IonItem,
+    IonLabel,
+  ],
+  standalone: true,
 })
 export class OrderDetailsComponent implements OnInit {
   order: any;
