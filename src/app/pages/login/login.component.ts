@@ -5,7 +5,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from "@angular/forms";
-import { IonicModule } from "@ionic/angular";
+import { IonicModule, ToastController } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
 
@@ -21,7 +21,8 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController
   ) {
     this.form = this.fb.group({
       username: ["", Validators.required],
@@ -29,17 +30,27 @@ export class LoginComponent {
     });
   }
 
-  onLogin() {
+  async onLogin() {
     if (this.form.valid) {
       const { username, password } = this.form.value;
       if (username === "admin" && password === "1234") {
-        // alert("Login successful!");
+        await this.showToast("Login successful!");
         this.router.navigate(["/dashboard"]);
       } else {
-        alert("Invalid credentials");
+        await this.showToast("Invalid credentials");
       }
     } else {
       this.form.markAllAsTouched();
     }
+  }
+
+  private async showToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: "top",
+      color: "success",
+    });
+    await toast.present();
   }
 }

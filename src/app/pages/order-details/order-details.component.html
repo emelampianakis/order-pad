@@ -29,15 +29,21 @@
   <div class="sheet-container">
     <!-- Order Meta -->
     <div class="order-meta-top">
-      <div class="created-at">Created at: {{ order.date }}</div>
-      <div class="total">{{ order.total | currency }}</div>
+      <div class="created-at">
+        Created at <span>{{ order.date }}</span>
+      </div>
+      <div class="total">
+        Total Price <span>{{ order.total | currency }}</span>
+      </div>
     </div>
 
-    <div class="order-id">Order ID: #{{ order.id }}</div>
+    <div class="order-id">
+      Order ID <span>{{ order.id }}</span>
+    </div>
 
     <!-- Products List -->
     <div class="products-section">
-      <h3>Products</h3>
+      <span style="color: black; font-size: 24px">Products</span>
       <ion-list mode="ios" lines="none">
         <ion-item *ngFor="let product of order.products">
           <ion-label>
@@ -50,16 +56,19 @@
         </ion-item>
       </ion-list>
     </div>
-    <ion-button
-      style="
-        position: absolute;
-        bottom: 16px;
-        width: calc(100% - 32px);
-        left: 16px;
-        color: #b3261e;
-      "
-      expand="block"
-      >Delete Order</ion-button
-    >
   </div>
+  <ion-button
+    style="
+      position: absolute;
+      bottom: 16px;
+      width: calc(100% - 32px);
+      left: 16px;
+      color: #b3261e;
+      z-index: 99;
+      margin: 0;
+    "
+    expand="block"
+    (click)="deleteOrder()"
+    >Delete Order</ion-button
+  >
 </ion-content>

@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { NavController } from "@ionic/angular";
+import { ActivatedRoute } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 import { Location } from "@angular/common";
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: "app-order-details",
@@ -16,9 +16,8 @@ export class OrderDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    // private navCtrl: NavController,
-    private location: Location
-    // private router: Router
+    private location: Location,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -45,7 +44,40 @@ export class OrderDetailsComponent implements OnInit {
         { name: "Pizza Margherita", quantity: 2, price: 12 },
         { name: "Coke", quantity: 3, price: 2.5 },
         { name: "Tiramisu", quantity: 1, price: 6 },
+        { name: "Pizza Margherita", quantity: 2, price: 12 },
+        { name: "Coke", quantity: 3, price: 2.5 },
+        { name: "Tiramisu", quantity: 1, price: 6 },
+        { name: "Pizza Margherita", quantity: 2, price: 12 },
+        { name: "Coke", quantity: 3, price: 2.5 },
+        { name: "Tiramisu", quantity: 1, price: 6 },
+        { name: "Pizza Margherita", quantity: 2, price: 12 },
+        { name: "Coke", quantity: 3, price: 2.5 },
+        { name: "Tiramisu", quantity: 1, price: 6 },
       ],
     };
+  }
+
+  async deleteOrder() {
+    const alert = await this.alertCtrl.create({
+      header: "Confirm Deletion",
+      // subHeader: "Delete Order",
+      message: "Are you sure you want to delete this order?",
+      buttons: [
+        {
+          text: "No",
+          role: "cancel",
+          handler: () => {},
+        },
+        {
+          text: "Yes",
+          handler: () => {
+            console.log("Order deleted");
+            this.goBack();
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

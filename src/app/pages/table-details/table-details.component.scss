@@ -15,6 +15,7 @@
     width: 100%;
     background: linear-gradient(to top, #0c4a6e, #06b6d4);
   }
+
   .header-card {
     color: black;
     position: relative;
@@ -27,39 +28,36 @@
     padding: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 
     .table-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
 
       .status {
         display: flex;
         align-items: center;
         font-weight: bold;
         text-transform: capitalize;
+        gap: 8px;
 
         .status-dot {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          margin-right: 8px;
           background-color: #666;
 
           &.open {
-            background-color: #28a745;
-            box-shadow: 0 0 8px #28a745aa;
+            background-color: #10dc60;
           }
-
           &.closed {
-            background-color: #dc3545;
-            box-shadow: 0 0 8px #dc3545aa;
+            background-color: #eb445a;
           }
-
           &.reserved {
-            background-color: #ffc107;
-            box-shadow: 0 0 8px #ffc107aa;
+            background-color: #ffc409;
           }
         }
       }
@@ -68,7 +66,6 @@
     .table-name {
       font-size: 22px;
       font-weight: bold;
-      margin-top: 8px;
     }
   }
 
@@ -81,7 +78,7 @@
     background: #e1eff4;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
-    padding: 32px 16px 80px;
+    padding: 64px 16px 80px;
     overflow-y: auto;
     z-index: 1;
 
