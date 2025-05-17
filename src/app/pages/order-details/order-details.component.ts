@@ -2,7 +2,6 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
-import { AlertController } from "@ionic/angular";
 import {
   IonContent,
   IonButton,
@@ -10,6 +9,7 @@ import {
   IonList,
   IonItem,
   IonLabel,
+  AlertController,
 } from "@ionic/angular/standalone";
 @Component({
   selector: "app-order-details",

@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
-import { ModalController } from "@ionic/angular";
-import { AddOrderModalComponent } from "../../components/add-order-modal.component";
+import { ModalController } from "@ionic/angular/standalone";
+
 import {
   IonContent,
   IonButton,
@@ -14,6 +14,8 @@ import {
   IonFab,
   IonFabButton,
 } from "@ionic/angular/standalone";
+import { AddOrderModalComponent } from "src/app/components/add-order-modal.component";
+
 @Component({
   selector: "app-table-details",
   templateUrl: "./table-details.component.html",
@@ -192,9 +194,9 @@ export class TableDetailsComponent implements OnInit {
 
   constructor(
     private location: Location,
-    private router: Router,
-    private modalCtrl: ModalController
+    private router: Router
   ) {}
+  private modalCtrl: ModalController = inject(ModalController);
 
   ngOnInit() {}
 

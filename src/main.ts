@@ -32,8 +32,5 @@ addIcons({
 });
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    provideRouter(routes),
-    provideIonicAngular(), // ✅ Correct way to include Ionic
-  ],
+  providers: [provideRouter(routes), provideIonicAngular()],
 });

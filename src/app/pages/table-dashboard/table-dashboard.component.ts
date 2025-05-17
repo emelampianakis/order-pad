@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-import { AlertController } from "@ionic/angular";
+
 import {
   IonContent,
   IonButton,
@@ -10,6 +10,7 @@ import {
   IonSegment,
   IonSegmentButton,
   IonSearchbar,
+  AlertController,
 } from "@ionic/angular/standalone";
 interface Table {
   id: number;
@@ -135,7 +136,6 @@ export class TableDashboardComponent {
     private router: Router,
     private alertCtrl: AlertController
   ) {}
-
   get filteredTables(): Table[] {
     return this.tables
       .filter((t) => (this.filter === "all" ? true : t.status === this.filter))

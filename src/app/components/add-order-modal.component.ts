@@ -1,7 +1,6 @@
-// add-order-modal.component.ts
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
-import { ModalController } from "@ionic/angular";
+import { Component, inject } from "@angular/core";
+import { ModalController } from "@ionic/angular/standalone";
 import {
   IonHeader,
   IonToolbar,
@@ -122,7 +121,8 @@ export class AddOrderModalComponent {
   selectedCategory: any = null;
   selectedSubcategory: any = null;
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor() {}
+  private modalCtrl: ModalController = inject(ModalController);
 
   close() {
     this.modalCtrl.dismiss();
