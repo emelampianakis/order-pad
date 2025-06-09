@@ -16,6 +16,10 @@ import {
   logOutOutline,
   personCircleOutline,
 } from "ionicons/icons";
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from "@angular/common/http";
 
 if (environment.production) {
   enableProdMode();
@@ -32,5 +36,9 @@ addIcons({
 });
 
 bootstrapApplication(AppComponent, {
-  providers: [provideRouter(routes), provideIonicAngular()],
+  providers: [
+    provideRouter(routes),
+    provideIonicAngular(),
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
 });
