@@ -54,7 +54,7 @@ export class TableDashboardComponent {
 
   constructor(
     private router: Router,
-    private alertCtrl: AlertController,
+    private alertController: AlertController,
     private loadingController: LoadingController,
     private dataService: DataService,
     private authService: AuthService
@@ -97,12 +97,14 @@ export class TableDashboardComponent {
     };
   }
 
-  goToTableDetails(id: number) {
-    this.router.navigate(["/table", id]);
+  goToTableDetails(table: Table) {
+    this.router.navigate(["/table", table.id], {
+      state: { table: table },
+    });
   }
 
   async logOut() {
-    const alert = await this.alertCtrl.create({
+    const alert = await this.alertController.create({
       header: "Confirm Logout",
       message: "Are you sure you want to log out?",
       buttons: [
@@ -134,7 +136,6 @@ export class TableDashboardComponent {
       next: async (res) => {
         await loading.dismiss();
         this.tables = res.data.items || [];
-        console.log("tables", this.tables);
       },
       error: async (err: any) => {
         console.error(err);

@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ModalController } from "@ionic/angular/standalone";
 
 import {
@@ -13,8 +13,11 @@ import {
   IonLabel,
   IonFab,
   IonFabButton,
+  LoadingController,
 } from "@ionic/angular/standalone";
 import { AddOrderModalComponent } from "src/app/components/add-order-modal.component";
+import { DataService } from "src/app/services/data.service";
+import { finalize } from "rxjs";
 
 @Component({
   selector: "app-table-details",
@@ -34,174 +37,54 @@ import { AddOrderModalComponent } from "src/app/components/add-order-modal.compo
   standalone: true,
 })
 export class TableDetailsComponent implements OnInit {
-  table = {
-    name: "Table 7",
-    status: "closed",
-    user: "John D.",
-    orderGroups: [
-      {
-        total: 42.5,
-        orders: [
-          {
-            id: 1213123,
-            time: "14:12",
-            date: "2025-05-16",
-            orderId: "12345",
-            price: 12,
-            user: "John D.",
-          },
-          {
-            id: 1213124,
-            time: "14:14",
-            date: "2025-05-16",
-            orderId: "sadasdad",
-            price: 2.5,
-            user: "Frank",
-          },
-        ],
-      },
-      {
-        total: 42.5,
-        orders: [
-          {
-            id: 1213123,
-
-            time: "14:12",
-            date: "2025-05-16",
-            orderId: "12345",
-            price: 12,
-            user: "John D.",
-          },
-          {
-            id: 1213124,
-            time: "14:14",
-            date: "2025-05-16",
-            orderId: "sadasdad",
-            price: 2.5,
-            user: "Frank",
-          },
-        ],
-      },
-      {
-        total: 42.5,
-        orders: [
-          {
-            id: 1213123,
-
-            time: "14:12",
-            date: "2025-05-16",
-            orderId: "12345",
-            price: 12,
-            user: "John D.",
-          },
-          {
-            id: 1213124,
-            time: "14:14",
-            date: "2025-05-16",
-            orderId: "sadasdad",
-            price: 2.5,
-            user: "Frank",
-          },
-        ],
-      },
-      {
-        total: 42.5,
-        orders: [
-          {
-            id: 1213123,
-            time: "14:12",
-            date: "2025-05-16",
-            orderId: "12345",
-            price: 12,
-            user: "John D.",
-          },
-          {
-            id: 1213124,
-            time: "14:14",
-            date: "2025-05-16",
-            orderId: "sadasdad",
-            price: 2.5,
-            user: "Frank",
-          },
-        ],
-      },
-      {
-        total: 42.5,
-        orders: [
-          {
-            id: 1213123,
-
-            time: "14:12",
-            date: "2025-05-16",
-            orderId: "12345",
-            price: 12,
-            user: "John D.",
-          },
-          {
-            id: 1213124,
-            time: "14:14",
-            date: "2025-05-16",
-            orderId: "sadasdad",
-            price: 2.5,
-            user: "Frank",
-          },
-        ],
-      },
-      {
-        total: 42.5,
-        orders: [
-          {
-            id: 1213123,
-            time: "14:12",
-            date: "2025-05-16",
-            orderId: "12345",
-            price: 12,
-            user: "John D.",
-          },
-          {
-            id: 1213124,
-            time: "14:14",
-            date: "2025-05-16",
-            orderId: "sadasdad",
-            price: 2.5,
-            user: "Frank",
-          },
-        ],
-      },
-      {
-        total: 28,
-        orders: [
-          {
-            id: 1213123,
-            time: "14:30",
-            date: "2025-05-16",
-            orderId: "1231323",
-            price: 10,
-            user: "Eve",
-          },
-          {
-            id: 1213124,
-            time: "14:33",
-            date: "2025-05-16",
-            orderId: "41424",
-            price: 1.5,
-            user: "Alice",
-          },
-        ],
-      },
-    ],
-  };
+  tableOrders: any[] = [];
+  selectedTable: any;
 
   constructor(
     private location: Location,
-    private router: Router
+    private router: Router,
+    private dataService: DataService,
+    private loadingController: LoadingController,
+    private route: ActivatedRoute
   ) {}
   private modalCtrl: ModalController = inject(ModalController);
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchTableOrders();
+    const navigation = this.router.getCurrentNavigation();
+    this.selectedTable = navigation?.extras.state?.["table"];
+  }
 
   goBack() {
     this.location.back();
+  }
+
+  async fetchTableOrders() {
+    const loading = await this.loadingController.create({
+      message: "Loading orders...",
+    });
+    await loading.present();
+    const tableId = this.route.snapshot.paramMap.get("id");
+    if (!tableId) {
+      console.error("No table ID found in route.");
+      await loading.dismiss();
+      return;
+    }
+    this.dataService
+      .getTableOrders(tableId)
+      .pipe(
+        finalize(() => {
+          loading.dismiss();
+        })
+      )
+      .subscribe({
+        next: async (res) => {
+          this.tableOrders = res.data.items || [];
+        },
+        error: async (err: any) => {
+          console.error(err);
+        },
+      });
   }
 
   goToOrderDetails(order: any) {
@@ -216,5 +99,9 @@ export class TableDetailsComponent implements OnInit {
       handle: true,
     });
     return await modal.present();
+  }
+
+  getStatusClasses(status: string): string {
+    return status.replace(/ /g, "");
   }
 }

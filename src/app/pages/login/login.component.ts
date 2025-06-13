@@ -53,13 +53,13 @@ export class LoginComponent {
       this.authService.login({ username: username, password }).subscribe({
         next: async () => {
           await loading.dismiss();
-          await this.showToast("Login successful!");
+          await this.showSuccessToast("Login successful!");
           this.router.navigate(["/dashboard"]);
         },
         error: async (err: any) => {
           console.error(err);
           await loading.dismiss();
-          await this.showToast("Login failed. Check your credentials.");
+          await this.showDangerToast("Login failed. Check your credentials.");
         },
       });
     } else {
@@ -67,12 +67,22 @@ export class LoginComponent {
     }
   }
 
-  private async showToast(message: string) {
+  private async showDangerToast(message: string) {
     const toast = await this.toastController.create({
       message,
       duration: 2000,
       position: "top",
       color: "danger",
+    });
+    await toast.present();
+  }
+
+  private async showSuccessToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      position: "top",
+      color: "success",
     });
     await toast.present();
   }

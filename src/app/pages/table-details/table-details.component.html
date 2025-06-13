@@ -15,47 +15,52 @@
     <div class="header-card">
       <div class="table-info">
         <div class="status">
-          <span class="status-dot" [ngClass]="table.status"></span>
-          {{ table.status }}
+          <span
+            class="status-dot"
+            [ngClass]="getStatusClasses(selectedTable.status)"
+          ></span>
+          {{ selectedTable.status }}
         </div>
-        <div class="user">
-          <ion-icon name="person-circle-outline"></ion-icon>{{ table.user }}
+        <div *ngIf="selectedTable.user" class="user">
+          <ion-icon name="person-circle-outline"></ion-icon
+          >{{ selectedTable.user }}
         </div>
       </div>
-      <div class="table-name">{{ table.name }}</div>
+      <div class="table-name">{{ selectedTable.label }}</div>
     </div>
   </div>
 
   <!-- Bottom Sheet Style Container -->
   <div class="sheet-container">
-    <ng-container *ngFor="let group of table.orderGroups">
-      <div class="order-group">
-        <div class="group-total">{{ group.total | currency }}</div>
-        <ion-list mode="ios">
-          <ion-item
-            *ngFor="let order of group.orders"
-            lines="none"
-            detail="true"
-            (click)="goToOrderDetails(order)"
-          >
-            <ion-label class="order-label">
-              <div class="order-time">{{ order.time }}</div>
-              <div class="order-meta">
-                <span>{{ order.date }}</span>
-                <span style="display: flex; gap: 8px">
-                  <div class="user">
-                    <ion-icon name="person-circle-outline"></ion-icon
-                    >{{ order.user }}
-                  </div>
-                  <span>- </span>
-                  {{ order.price | currency }}
-                </span>
-              </div>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </div>
-    </ng-container>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        color: black;
+      "
+    >
+      Orders
+      <div><ion-button>Transfer</ion-button><ion-button>Pay</ion-button></div>
+    </div>
+    <ion-list mode="ios">
+      <ion-item
+        *ngFor="let order of tableOrders"
+        detail="true"
+        (click)="goToOrderDetails(order)"
+      >
+        <ion-label class="order-label">
+          <div class="order-time">{{ order.createdAt | date: "HH:mm" }}</div>
+          <div class="order-meta">
+            <span>{{ order.createdAt | date: "yyyy-MM-dd" }}</span>
+            <span style="display: flex; gap: 8px">
+              {{ order.price | currency }}
+            </span>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="openAddOrderModal()">

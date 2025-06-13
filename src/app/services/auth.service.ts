@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, firstValueFrom, map, catchError, of } from "rxjs";
+import { firstValueFrom, map } from "rxjs";
 import { Preferences } from "@capacitor/preferences";
+import { Router } from "@angular/router";
+import { AlertController, LoadingController } from "@ionic/angular/standalone";
 
 @Injectable({
   providedIn: "root",
@@ -11,7 +13,12 @@ export class AuthService {
   private accessTokenKey = "access_token";
   private dbKey = "db";
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private alertController: AlertController,
+    private loadingController: LoadingController
+  ) {
     this.init();
   }
 
@@ -50,18 +57,17 @@ export class AuthService {
   async refreshToken(): Promise<string | null> {
     const expiredToken = await this.getAccessToken();
     if (!expiredToken) {
-      await this.logout();
+      await this.onSessionExpired();
       return null;
     }
 
     try {
       const response = await firstValueFrom(
         this.http.post<any>(`${this.apiUrl}/auth/refresh-token`, {
-          accessToken: expiredToken,
+          refreshToken: expiredToken,
         })
       );
 
-      // store the new accessToken
       await Preferences.set({
         key: this.accessTokenKey,
         value: response.accessToken,
@@ -69,8 +75,28 @@ export class AuthService {
 
       return response.accessToken;
     } catch (error) {
-      await this.logout();
+      await this.onSessionExpired();
       return null;
     }
+  }
+
+  async onSessionExpired() {
+    const loader = await this.loadingController.getTop();
+    if (loader) {
+      await loader.dismiss();
+    }
+    await Preferences.remove({ key: this.accessTokenKey });
+    await Preferences.remove({ key: this.dbKey });
+
+    const alert = await this.alertController.create({
+      header: "Session Expired",
+      message: "Your session has expired. Please log in again.",
+      buttons: ["OK"],
+    });
+
+    await alert.present();
+    await alert.onDidDismiss();
+
+    this.router.navigate([""]);
   }
 }

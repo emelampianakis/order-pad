@@ -32,7 +32,7 @@ export class OrderDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private alertCtrl: AlertController
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -73,7 +73,7 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   async deleteOrder() {
-    const alert = await this.alertCtrl.create({
+    const alert = await this.alertController.create({
       header: "Confirm Deletion",
       // subHeader: "Delete Order",
       message: "Are you sure you want to delete this order?",

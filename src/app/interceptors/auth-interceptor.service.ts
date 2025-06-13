@@ -34,7 +34,12 @@ export class AuthInterceptor implements HttpInterceptor {
             }
             return next.handle(cloned).pipe(
               catchError((err) => {
-                if (err instanceof HttpErrorResponse && err.status === 401) {
+                const isAuthError =
+                  err instanceof HttpErrorResponse && err.status === 401;
+                const isRefreshCall = req.url.includes("/auth/refresh-token");
+
+                if (isAuthError && !isRefreshCall) {
+                  // If 401 and not already the refresh endpoint
                   return from(this.authService.refreshToken()).pipe(
                     switchMap((newToken) => {
                       if (newToken) {
@@ -44,11 +49,15 @@ export class AuthInterceptor implements HttpInterceptor {
                             .set("x-tenant-id", db || ""),
                         });
                         return next.handle(retryReq);
+                      } else {
+                        // Refresh failed — do not retry, just throw original error
+                        return throwError(() => err);
                       }
-                      return throwError(() => err);
                     })
                   );
                 }
+
+                // If refresh call itself failed or another error
                 return throwError(() => err);
               })
             );
