@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class DataService {
-  private apiUrl = "http://37.27.241.236:3100/api";
+  private apiUrl = "https://florder.gr:3100";
 
   constructor(private http: HttpClient) {}
 

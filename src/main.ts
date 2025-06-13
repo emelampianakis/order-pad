@@ -17,9 +17,11 @@ import {
   personCircleOutline,
 } from "ionicons/icons";
 import {
+  HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
 } from "@angular/common/http";
+import { AuthInterceptor } from "./app/interceptors/auth-interceptor.service";
 
 if (environment.production) {
   enableProdMode();
@@ -40,5 +42,10 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideIonicAngular(),
     provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
 });

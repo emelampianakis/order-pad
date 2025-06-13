@@ -11,13 +11,16 @@ import {
   IonSegmentButton,
   IonSearchbar,
   AlertController,
+  LoadingController,
 } from "@ionic/angular/standalone";
+import { DataService } from "src/app/services/data.service";
+import { AuthService } from "src/app/services/auth.service";
 interface Table {
   id: number;
-  name: string;
+  label: string;
   user: string;
-  price: number;
-  status: "open" | "closed" | "reserved";
+  totalUnpaidPrice: number;
+  status: "available" | "not available";
 }
 
 @Component({
@@ -39,107 +42,31 @@ interface Table {
 export class TableDashboardComponent {
   username = "Admin"; // You can replace with real user info
 
-  filter: "all" | "open" | "closed" | "reserved" = "all";
+  filter: "all" | "available" | "not available" = "all";
+
   searchTerm = "";
   columns = 1;
 
-  statuses = ["open", "closed", "reserved"];
+  statuses = ["available", "not available"];
+
   currency = "€";
-  tables: Table[] = [
-    {
-      id: 1,
-      name: "Table 1",
-      status: "open",
-      user: "Alice",
-      price: 42.5,
-    },
-    {
-      id: 2,
-      name: "Table 2",
-      status: "closed",
-      user: "Bob",
-      price: 0,
-    },
-    {
-      id: 3,
-      name: "Table 3",
-      status: "reserved",
-      user: "Chris",
-      price: 125.0,
-    },
-    {
-      id: 4,
-      name: "Table 4",
-      status: "open",
-      user: "Dana",
-      price: 68.9,
-    },
-    {
-      id: 5,
-      name: "Table 5",
-      status: "closed",
-      user: "Eve",
-      price: 0,
-    },
-    {
-      id: 6,
-      name: "Table 6",
-      status: "reserved",
-      user: "Frank",
-      price: 88.2,
-    },
-    {
-      id: 4,
-      name: "Table 4",
-      status: "open",
-      user: "Dana",
-      price: 68.9,
-    },
-    {
-      id: 5,
-      name: "Table 5",
-      status: "closed",
-      user: "Eve",
-      price: 0,
-    },
-    {
-      id: 6,
-      name: "Table 6",
-      status: "reserved",
-      user: "Frank",
-      price: 88.2,
-    },
-    {
-      id: 4,
-      name: "Table 4",
-      status: "open",
-      user: "Dana",
-      price: 68.9,
-    },
-    {
-      id: 5,
-      name: "Table 5",
-      status: "closed",
-      user: "Eve",
-      price: 0,
-    },
-    {
-      id: 6,
-      name: "Table 6",
-      status: "reserved",
-      user: "Frank",
-      price: 88.2,
-    },
-  ];
+  tables: Table[] = [];
 
   constructor(
     private router: Router,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private loadingController: LoadingController,
+    private dataService: DataService,
+    private authService: AuthService
   ) {}
+
+  ngOnInit() {
+    this.fetchTables();
+  }
   get filteredTables(): Table[] {
     return this.tables
       .filter((t) => (this.filter === "all" ? true : t.status === this.filter))
-      .filter((t) => t.name.toString().includes(this.searchTerm.trim()));
+      .filter((t) => t.label.toString().includes(this.searchTerm.trim()));
   }
 
   cycleColumns() {
@@ -163,8 +90,9 @@ export class TableDashboardComponent {
     status: string,
     tableStatus: string
   ): { [klass: string]: boolean } {
+    const sanitizedStatus = status.replace(/\s+/g, "");
     return {
-      [status]: true,
+      [sanitizedStatus]: true,
       active: status === tableStatus,
     };
   }
@@ -186,6 +114,7 @@ export class TableDashboardComponent {
         {
           text: "Log Out",
           handler: () => {
+            this.authService.logout();
             this.router.navigate([""]);
           },
         },
@@ -193,5 +122,24 @@ export class TableDashboardComponent {
     });
 
     await alert.present();
+  }
+
+  async fetchTables() {
+    const loading = await this.loadingController.create({
+      message: "Loading tables...",
+    });
+    await loading.present();
+
+    this.dataService.getTables().subscribe({
+      next: async (res) => {
+        await loading.dismiss();
+        this.tables = res.data.items || [];
+        console.log("tables", this.tables);
+      },
+      error: async (err: any) => {
+        console.error(err);
+        await loading.dismiss();
+      },
+    });
   }
 }

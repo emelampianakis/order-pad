@@ -7,11 +7,9 @@ import { Preferences } from "@capacitor/preferences";
   providedIn: "root",
 })
 export class AuthService {
-  private apiUrl = "http://37.27.241.236:3100/api";
+  private apiUrl = "https://www.florder.gr:3100";
   private accessTokenKey = "access_token";
   private dbKey = "db";
-
-  private isAuthenticated = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {
     this.init();
@@ -19,18 +17,16 @@ export class AuthService {
 
   private async init() {
     const token = await this.getAccessToken();
-    this.isAuthenticated.next(!!token);
   }
 
-  login(credentials: { email: string; password: string }) {
-    return this.http.post<any>(`${this.apiUrl}/auth/login`, credentials).pipe(
+  login(credentials: { username: string; password: string }) {
+    return this.http.post<any>(`${this.apiUrl}/auth/sign-in`, credentials).pipe(
       map(async (res) => {
         await Preferences.set({
           key: this.accessTokenKey,
           value: res.accessToken,
         });
         await Preferences.set({ key: this.dbKey, value: res.db });
-        this.isAuthenticated.next(true);
         return res;
       })
     );
@@ -39,7 +35,6 @@ export class AuthService {
   async logout() {
     await Preferences.remove({ key: this.accessTokenKey });
     await Preferences.remove({ key: this.dbKey });
-    this.isAuthenticated.next(false);
   }
 
   async getAccessToken(): Promise<string | null> {
@@ -77,9 +72,5 @@ export class AuthService {
       await this.logout();
       return null;
     }
-  }
-
-  getAuthStatus() {
-    return this.isAuthenticated.asObservable();
   }
 }

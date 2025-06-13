@@ -33,9 +33,11 @@
 
       <ion-segment mode="ios" [(ngModel)]="filter">
         <ion-segment-button value="all">All</ion-segment-button>
-        <ion-segment-button value="open">Open</ion-segment-button>
-        <ion-segment-button value="closed">Closed</ion-segment-button>
-        <ion-segment-button value="reserved">Reserved</ion-segment-button>
+        <ion-segment-button value="available">Available</ion-segment-button>
+        <ion-segment-button value="notavailable"
+          >Not Available</ion-segment-button
+        >
+        <!-- <ion-segment-button value="reserved">Reserved</ion-segment-button> -->
       </ion-segment>
 
       <ion-searchbar
@@ -71,15 +73,15 @@
                 </div>
               </div>
               <div class="info-row">
-                <div class="user">
+                <div *ngIf="table.user" class="user">
                   <ion-icon name="person-circle-outline"></ion-icon
                   >{{ table.user }}
                 </div>
 
                 <div class="table-meta">
-                  <span class="table-name">{{ table.name }}</span>
+                  <span class="table-name">{{ table.label }}</span>
                   <div class="price">
-                    <span class="price-text">{{ table.price }}</span>
+                    <span class="price-text">{{ table.totalUnpaidPrice }}</span>
                     <span class="currency">{{ currency }}</span>
                   </div>
                 </div>
@@ -93,14 +95,14 @@
                 {{ table.status }}
               </div>
 
-              <div class="table-name">{{ table.name }}</div>
+              <div class="table-name">{{ table.label }}</div>
 
-              <div class="user">
+              <div *ngIf="table.user" class="user">
                 <ion-icon name="person-circle-outline"></ion-icon
                 >{{ table.user }}
               </div>
               <div class="price">
-                <span class="price-text">{{ table.price }}</span>
+                <span class="price-text">{{ table.totalUnpaidPrice }}</span>
                 <span class="currency">{{ currency }}</span>
               </div>
             </ng-container>
@@ -108,14 +110,14 @@
             <!-- View 3 -->
             <ng-container *ngIf="columns === 3">
               <div class="status-bar" [ngClass]="table.status"></div>
-              <div class="table-name">{{ table.name }}</div>
+              <div class="table-name">{{ table.label }}</div>
 
-              <div class="user">
+              <div *ngIf="table.user" class="user">
                 <ion-icon name="person-circle-outline"></ion-icon
                 >{{ table.user }}
               </div>
               <div class="price">
-                <span class="price-text">{{ table.price }}</span>
+                <span class="price-text">{{ table.totalUnpaidPrice }}</span>
                 <span class="currency">{{ currency }}</span>
               </div>
             </ng-container>

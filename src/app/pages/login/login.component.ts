@@ -50,7 +50,7 @@ export class LoginComponent {
       });
       await loading.present();
 
-      this.authService.login({ email: username, password }).subscribe({
+      this.authService.login({ username: username, password }).subscribe({
         next: async () => {
           await loading.dismiss();
           await this.showToast("Login successful!");
