@@ -1,0 +1,49 @@
+<div class="modal-wrapper">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Payment</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content scrollY="true">
+    <!-- Total Amount Box -->
+    <div class="total-box">
+      <div class="label">Total</div>
+      <div class="amount">{{ getTotal() | currency }}</div>
+    </div>
+
+    <!-- Sticky Top -->
+    <div class="sticky-top">
+      <div class="top-controls">
+        <span>Select Orders</span>
+        <ion-checkbox [(ngModel)]="allChecked" (ionChange)="toggleAll()"
+          >All</ion-checkbox
+        >
+      </div>
+    </div>
+
+    <ion-list>
+      <ion-item *ngFor="let order of orders" (click)="toggleOrder(order)">
+        <ion-label>
+          <div class="order-time">{{ order.createdAt | date: "HH:mm" }}</div>
+          <div class="order-meta">
+            {{ order.createdAt | date: "dd-MM-yyyy" }}<br />
+            {{ order.price | currency }}
+            <span class="not-paid">NOT PAID</span>
+          </div>
+        </ion-label>
+        <ion-checkbox slot="end" [checked]="isChecked(order)"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <ion-footer class="modal-footer">
+    <ion-button
+      expand="block"
+      (click)="submitPayment()"
+      [disabled]="selectedOrders.length === 0"
+    >
+      Payment
+    </ion-button>
+  </ion-footer>
+</div>

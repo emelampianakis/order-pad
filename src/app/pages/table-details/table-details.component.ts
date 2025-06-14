@@ -18,6 +18,7 @@ import {
 import { AddOrderModalComponent } from "src/app/components/add-order-modal.component";
 import { DataService } from "src/app/services/data.service";
 import { finalize } from "rxjs";
+import { PayOrderModalComponent } from "src/app/components/pay-order-modal/pay-order-modal.component";
 import { TransferOrderModalComponent } from "src/app/components/transfer-order-modal/transfer-order-modal.component";
 
 @Component({
@@ -51,9 +52,12 @@ export class TableDetailsComponent implements OnInit {
   private modalCtrl: ModalController = inject(ModalController);
 
   ngOnInit() {
-    this.fetchTableOrders();
     const navigation = this.router.getCurrentNavigation();
     this.selectedTable = navigation?.extras.state?.["table"];
+  }
+
+  ngAfterViewInit() {
+    this.fetchTableOrders();
   }
 
   goBack() {
@@ -110,11 +114,7 @@ export class TableDetailsComponent implements OnInit {
 
   async openTransferOrderModal() {
     const modal = await this.modalCtrl.create({
-      component: (
-        await import(
-          "src/app/components/transfer-order-modal/transfer-order-modal.component"
-        )
-      ).TransferOrderModalComponent,
+      component: TransferOrderModalComponent,
       componentProps: {
         orders: this.tableOrders,
       },
@@ -133,12 +133,22 @@ export class TableDetailsComponent implements OnInit {
   }
 
   async openPayOrderModal() {
-    //   const modal = await this.modalCtrl.create({
-    //     component: openPayOrderModal,
-    //     breakpoints: [0, 0.2, 0.8],
-    //     initialBreakpoint: 0.8,
-    //     handle: true,
-    //   });
-    //   return await modal.present();
+    const modal = await this.modalCtrl.create({
+      component: PayOrderModalComponent,
+      componentProps: {
+        orders: this.tableOrders.filter((o) => !o.paid),
+      },
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      handle: false,
+      cssClass: "transfer-modal",
+    });
+
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+
+    if (data?.paid) {
+      this.fetchTableOrders();
+    }
   }
 }

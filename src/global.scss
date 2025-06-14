@@ -83,7 +83,13 @@
 .table-name {
   font-size: 22px;
 }
+
 ion-modal.transfer-modal {
+  --height: auto;
+  align-items: flex-end;
+}
+
+ion-modal.pay-modal {
   --height: auto;
   align-items: flex-end;
 }
