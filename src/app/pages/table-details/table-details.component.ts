@@ -106,6 +106,7 @@ export class TableDetailsComponent implements OnInit {
       initialBreakpoint: 1,
       handle: false,
       cssClass: "custom-sheet-modal",
+      mode: "ios",
     });
 
     await modal.present();
@@ -130,6 +131,7 @@ export class TableDetailsComponent implements OnInit {
       initialBreakpoint: 1,
       handle: false,
       cssClass: "custom-sheet-modal",
+      mode: "ios",
     });
 
     await modal.present();
@@ -150,6 +152,7 @@ export class TableDetailsComponent implements OnInit {
       initialBreakpoint: 1,
       handle: false,
       cssClass: "custom-sheet-modal",
+      mode: "ios",
     });
 
     await modal.present();

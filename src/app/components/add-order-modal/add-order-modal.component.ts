@@ -14,7 +14,6 @@ import {
   IonButtons,
   IonNote,
   IonIcon,
-  IonToggle,
   IonBadge,
   IonInput,
   IonSelect,
@@ -44,7 +43,6 @@ import { firstValueFrom } from "rxjs";
     IonButtons,
     IonNote,
     IonIcon,
-    IonToggle,
     IonBadge,
     IonInput,
     IonSelect,
@@ -151,7 +149,13 @@ export class AddOrderModalComponent {
     this.productQuantities[id] = (this.productQuantities[id] || 1) + 1;
   }
 
-  async decreaseQuantity(item: any) {
+  decreaseQuantity(prod: any) {
+    const id = prod.id;
+    const current = this.productQuantities[id] || 1;
+    this.productQuantities[id] = Math.max(current - 1, 1);
+  }
+
+  async decreaseQuantityCart(item: any) {
     if (item.quantity > 1) {
       item.quantity--;
     } else {
