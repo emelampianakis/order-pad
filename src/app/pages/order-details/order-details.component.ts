@@ -38,7 +38,7 @@ export class OrderDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private alertController: AlertController,
+    private alertCtrl: AlertController,
     private dataService: DataService,
     private loadingController: LoadingController,
     private router: Router
@@ -85,7 +85,7 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   async deleteOrder() {
-    const alert = await this.alertController.create({
+    const alert = await this.alertCtrl.create({
       header: "Confirm Deletion",
       // subHeader: "Delete Order",
       message: "Are you sure you want to delete this order?",

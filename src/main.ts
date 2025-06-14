@@ -15,6 +15,7 @@ import {
   add,
   logOutOutline,
   personCircleOutline,
+  cartOutline,
 } from "ionicons/icons";
 import {
   HTTP_INTERCEPTORS,
@@ -35,6 +36,7 @@ addIcons({
   add: add,
   "log-out-outline": logOutOutline,
   "person-circle-outline": personCircleOutline,
+  "cart-outline": cartOutline,
 });
 
 bootstrapApplication(AppComponent, {

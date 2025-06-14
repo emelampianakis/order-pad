@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <ion-list>
+    <ion-list mode="ios" lines="none">
       <ion-item *ngFor="let order of orders" (click)="toggleOrder(order)">
         <ion-label>
           <div class="order-time">{{ order.createdAt | date: "HH:mm" }}</div>

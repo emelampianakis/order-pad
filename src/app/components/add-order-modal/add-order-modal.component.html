@@ -1,0 +1,205 @@
+<div class="modal-wrapper">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button (click)="back()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <ion-title>Add Order</ion-title>
+
+      <ion-buttons slot="end">
+        <ion-button class="cart-button" (click)="toggleCartView()">
+          <ion-icon [name]="cartToggleIcon"></ion-icon>
+        </ion-button>
+        <ion-badge color="danger" *ngIf="cartItemCount > 0 && view !== 'cart'">
+          {{ cartItemCount }}
+        </ion-badge>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <!-- Breadcrumb -->
+    <div *ngIf="view !== 'cart'" class="breadcrumb">
+      <ion-icon name="apps-outline" class="breadcrumb-icon"></ion-icon>
+      <span class="breadcrumb-segment">Categories</span>
+      <ng-container *ngFor="let crumb of breadcrumb">
+        <span class="breadcrumb-separator"> &gt; </span>
+        <span class="breadcrumb-segment">{{ crumb.name }}</span>
+      </ng-container>
+      <ng-container *ngIf="view === 'product-details' && selectedProduct">
+        <span class="breadcrumb-separator"> &gt; </span>
+        <span class="breadcrumb-segment">{{
+          selectedProduct.label || selectedProduct.name
+        }}</span>
+      </ng-container>
+    </div>
+
+    <!-- Loader -->
+    <div *ngIf="loading" class="loading-spinner">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <!-- Categories -->
+    <ion-list
+      mode="ios"
+      lines="none"
+      *ngIf="!loading && view === 'categories'"
+      class="categories-list"
+    >
+      <ion-item
+        button
+        *ngFor="let cat of currentCategories"
+        (click)="navigateToCategory(cat)"
+        lines="none"
+      >
+        {{ cat.label || cat.name }}
+      </ion-item>
+    </ion-list>
+
+    <!-- Products -->
+    <ion-list
+      mode="ios"
+      lines="none"
+      *ngIf="!loading && view === 'products'"
+      class="product-list"
+    >
+      <ion-item *ngFor="let prod of currentProducts" lines="none">
+        <ion-label>
+          <div class="product-info">
+            <div class="product-name">{{ prod.label || prod.name }}</div>
+            <div class="product-price">{{ prod.price | currency }}</div>
+          </div>
+
+          <div class="product-actions">
+            <ion-button size="small" fill="outline" (click)="viewProduct(prod)">
+              View
+            </ion-button>
+
+            <div class="quantity-add">
+              <ion-button
+                size="small"
+                fill="clear"
+                (click)="decreaseQuantity(prod)"
+                >-</ion-button
+              >
+              <ion-input
+                [value]="getQuantity(prod)"
+                readonly
+                style="width: 40px; text-align: center"
+              ></ion-input>
+              <ion-button
+                size="small"
+                fill="clear"
+                (click)="increaseQuantity(prod)"
+                >+</ion-button
+              >
+
+              <ion-button
+                size="small"
+                color="success"
+                (click)="addToCart(prod)"
+              >
+                Add
+              </ion-button>
+            </div>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <!-- Product Detail -->
+    <div *ngIf="!loading && view === 'product-details'" class="product-detail">
+      <h2>{{ selectedProduct?.label }}</h2>
+      <p>{{ selectedProduct?.description }}</p>
+      <p>
+        <strong>{{ selectedProduct?.price | currency }}</strong>
+      </p>
+      <ion-button expand="block" (click)="addToCart(selectedProduct)">
+        Add to Cart
+      </ion-button>
+    </div>
+
+    <!-- Cart -->
+    <!-- Cart -->
+    <div *ngIf="!loading && view === 'cart'" class="cart-container">
+      <div class="cart-item" *ngFor="let item of cart">
+        <div class="cart-item-details">
+          <div class="cart-item-title">{{ item.label || item.name }}</div>
+          <div class="cart-item-price">
+            {{ item.price | currency }} x {{ item.quantity }} =
+            <strong>{{ item.price * item.quantity | currency }}</strong>
+          </div>
+        </div>
+
+        <div class="cart-actions">
+          <ion-button size="small" (click)="decreaseQuantity(item)"
+            >-</ion-button
+          >
+
+          <span>{{ item.quantity }}</span>
+
+          <ion-button size="small" (click)="item.quantity = item.quantity + 1"
+            >+</ion-button
+          >
+        </div>
+      </div>
+
+      <!-- Cart Footer -->
+      <div class="cart-footer">
+        <ion-item lines="none" class="total-row">
+          <ion-label class="total-label">Total:</ion-label>
+          <ion-note slot="end" class="total-note">{{
+            getCartTotal() | currency
+          }}</ion-note>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-select
+            mode="md"
+            [(ngModel)]="selectedTableId"
+            class="footer-select-control"
+            justify="end"
+            label="Table:"
+          >
+            <ion-select-option
+              *ngFor="let table of availableTables"
+              [value]="table.id"
+              >{{ table.label }}</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-checkbox
+            [checked]="isPaid"
+            (ionChange)="isPaid = $event.detail.checked"
+            slot="end"
+            >Paid</ion-checkbox
+          >
+        </ion-item>
+
+        <ion-button
+          expand="block"
+          color="primary"
+          (click)="confirmOrder()"
+          [disabled]="cart.length === 0"
+        >
+          Complete Order
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          color="medium"
+          fill="outline"
+          (click)="clearCart()"
+          [disabled]="cart.length === 0"
+        >
+          Clear Cart
+        </ion-button>
+      </div>
+    </div>
+  </ion-content>
+</div>

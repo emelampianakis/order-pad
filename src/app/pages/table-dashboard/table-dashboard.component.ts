@@ -55,7 +55,7 @@ export class TableDashboardComponent {
 
   constructor(
     private router: Router,
-    private alertController: AlertController,
+    private alertCtrl: AlertController,
     private loadingController: LoadingController,
     private dataService: DataService,
     private authService: AuthService
@@ -113,7 +113,7 @@ export class TableDashboardComponent {
   }
 
   async logOut() {
-    const alert = await this.alertController.create({
+    const alert = await this.alertCtrl.create({
       header: "Confirm Logout",
       message: "Are you sure you want to log out?",
       buttons: [

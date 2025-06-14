@@ -15,11 +15,11 @@ import {
   IonFabButton,
   LoadingController,
 } from "@ionic/angular/standalone";
-import { AddOrderModalComponent } from "src/app/components/add-order-modal.component";
 import { DataService } from "src/app/services/data.service";
 import { finalize } from "rxjs";
 import { PayOrderModalComponent } from "src/app/components/pay-order-modal/pay-order-modal.component";
 import { TransferOrderModalComponent } from "src/app/components/transfer-order-modal/transfer-order-modal.component";
+import { AddOrderModalComponent } from "src/app/components/add-order-modal/add-order-modal.component";
 
 @Component({
   selector: "app-table-details",
@@ -101,11 +101,19 @@ export class TableDetailsComponent implements OnInit {
   async openAddOrderModal() {
     const modal = await this.modalCtrl.create({
       component: AddOrderModalComponent,
-      breakpoints: [0, 0.2, 0.8],
-      initialBreakpoint: 0.8,
-      handle: true,
+
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      handle: false,
+      cssClass: "custom-sheet-modal",
     });
-    return await modal.present();
+
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+    console.log(data);
+    // if (data?.paid) {
+    //   this.fetchTableOrders();
+    // }
   }
 
   getStatusClassName(status: string): string {
@@ -121,7 +129,7 @@ export class TableDetailsComponent implements OnInit {
       breakpoints: [1],
       initialBreakpoint: 1,
       handle: false,
-      cssClass: "transfer-modal",
+      cssClass: "custom-sheet-modal",
     });
 
     await modal.present();
@@ -141,7 +149,7 @@ export class TableDetailsComponent implements OnInit {
       breakpoints: [1],
       initialBreakpoint: 1,
       handle: false,
-      cssClass: "transfer-modal",
+      cssClass: "custom-sheet-modal",
     });
 
     await modal.present();

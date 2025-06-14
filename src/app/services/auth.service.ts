@@ -16,7 +16,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private alertController: AlertController,
+    private alertCtrl: AlertController,
     private loadingController: LoadingController
   ) {
     this.init();
@@ -86,7 +86,7 @@ export class AuthService {
     }
     await Preferences.clear();
 
-    const alert = await this.alertController.create({
+    const alert = await this.alertCtrl.create({
       header: "Session Expired",
       message: "Your session has expired. Please log in again.",
       buttons: ["OK"],
