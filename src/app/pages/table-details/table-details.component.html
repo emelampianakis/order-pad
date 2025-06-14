@@ -17,7 +17,7 @@
         <div class="status">
           <span
             class="status-dot"
-            [ngClass]="getStatusClasses(selectedTable.status)"
+            [ngClass]="getStatusClassName(selectedTable.status)"
           ></span>
           {{ selectedTable.status }}
         </div>
@@ -56,6 +56,9 @@
             <span>{{ order.createdAt | date: "yyyy-MM-dd" }}</span>
             <span style="display: flex; gap: 8px">
               {{ order.price | currency }}
+              <div [ngClass]="order.paid ? 'paid' : 'not-paid'">
+                {{ order.paid ? "PAID" : "NOT PAID" }}
+              </div>
             </span>
           </div>
         </ion-label>

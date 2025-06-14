@@ -40,8 +40,7 @@ export class AuthService {
   }
 
   async logout() {
-    await Preferences.remove({ key: this.accessTokenKey });
-    await Preferences.remove({ key: this.dbKey });
+    await Preferences.clear();
   }
 
   async getAccessToken(): Promise<string | null> {
@@ -85,8 +84,7 @@ export class AuthService {
     if (loader) {
       await loader.dismiss();
     }
-    await Preferences.remove({ key: this.accessTokenKey });
-    await Preferences.remove({ key: this.dbKey });
+    await Preferences.clear();
 
     const alert = await this.alertController.create({
       header: "Session Expired",

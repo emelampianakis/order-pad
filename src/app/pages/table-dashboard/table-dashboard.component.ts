@@ -15,6 +15,7 @@ import {
 } from "@ionic/angular/standalone";
 import { DataService } from "src/app/services/data.service";
 import { AuthService } from "src/app/services/auth.service";
+import { Preferences } from "@capacitor/preferences";
 interface Table {
   id: number;
   label: string;
@@ -40,7 +41,7 @@ interface Table {
   styleUrls: ["./table-dashboard.component.scss"],
 })
 export class TableDashboardComponent {
-  username = "Admin"; // You can replace with real user info
+  username: any;
 
   filter: "all" | "available" | "not available" = "all";
 
@@ -60,7 +61,11 @@ export class TableDashboardComponent {
     private authService: AuthService
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  async ionViewWillEnter() {
+    this.username = (await Preferences.get({ key: "user" })).value;
+    // this.fetchUser();
     this.fetchTables();
   }
   get filteredTables(): Table[] {
@@ -95,6 +100,10 @@ export class TableDashboardComponent {
       [sanitizedStatus]: true,
       active: status === tableStatus,
     };
+  }
+
+  getStatusClassName(status: string): string {
+    return status.replace(/ /g, "");
   }
 
   goToTableDetails(table: Table) {
@@ -140,6 +149,17 @@ export class TableDashboardComponent {
       error: async (err: any) => {
         console.error(err);
         await loading.dismiss();
+      },
+    });
+  }
+
+  async fetchUser() {
+    this.dataService.getUser().subscribe({
+      next: async (res) => {
+        console.log(res);
+      },
+      error: async (err: any) => {
+        console.error(err);
       },
     });
   }

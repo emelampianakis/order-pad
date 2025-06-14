@@ -14,40 +14,50 @@
     <div class="header-card">
       <div class="table-info">
         <div class="status">
-          <span class="status-dot" [ngClass]="order.status"></span>
-          {{ order.status }}
+          <span
+            class="status-dot"
+            [ngClass]="getStatusClassName(selectedTable.status)"
+          ></span>
+          {{ selectedTable.status }}
         </div>
-        <div class="user">
-          <ion-icon name="person-circle-outline"></ion-icon>{{ order.user }}
+        <div *ngIf="selectedTable.user" class="user">
+          <ion-icon name="person-circle-outline"></ion-icon
+          >{{ selectedTable.user }}
         </div>
       </div>
-      <div class="table-name">{{ order.tableName }}</div>
+      <div class="table-name">{{ selectedTable.label }}</div>
     </div>
   </div>
 
   <!-- Sheet Container -->
   <div class="sheet-container">
     <!-- Order Meta -->
-    <div class="order-meta-top">
+    <div *ngIf="selectedOrder" class="order-meta-top">
       <div class="created-at">
-        Created at <span>{{ order.date }}</span>
+        Created at
+        <span>{{ selectedOrder.createdAt | date: "yyyy-MM-dd HH:mm" }}</span>
       </div>
       <div class="total">
-        Total Price <span>{{ order.total | currency }}</span>
+        Total Price <span>{{ selectedOrder.price | currency }}</span>
       </div>
     </div>
 
-    <div class="order-id">
-      Order ID <span>{{ order.id }}</span>
+    <div *ngIf="selectedOrder" class="order-meta-bottom">
+      <div class="order-id">
+        Order ID <span>{{ selectedOrder.id }}</span>
+      </div>
+      <div [ngClass]="selectedOrder.paid ? 'paid' : 'not-paid'">
+        {{ selectedOrder.paid ? "PAID" : "NOT PAID" }}
+      </div>
     </div>
 
     <!-- Products List -->
-    <div class="products-section">
+    <div *ngIf="order" class="products-section">
       <span style="color: black; font-size: 24px">Products</span>
       <ion-list mode="ios" lines="none">
-        <ion-item *ngFor="let product of order.products">
+        <ion-item *ngFor="let product of order.orderProducts">
           <ion-label>
-            <div class="product-name">{{ product.name }}</div>
+            <div class="product-name">{{ product.label }}</div>
             <div class="product-meta">
               Quantity: {{ product.quantity }} &nbsp;|&nbsp; Price:
               {{ product.price | currency }}
@@ -63,12 +73,12 @@
       bottom: 16px;
       width: calc(100% - 32px);
       left: 16px;
-      color: #b3261e;
       z-index: 99;
       margin: 0;
     "
     expand="block"
+    color="danger"
     (click)="deleteOrder()"
-    >Delete Order</ion-button
+    >Cancel Order</ion-button
   >
 </ion-content>

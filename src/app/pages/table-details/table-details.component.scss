@@ -114,4 +114,14 @@
     --background: #9edbf7;
     --color: black;
   }
+
+  .paid {
+    color: green;
+    font-weight: bold;
+  }
+
+  .not-paid {
+    color: red;
+    font-weight: bold;
+  }
 }

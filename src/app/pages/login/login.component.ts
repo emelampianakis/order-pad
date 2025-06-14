@@ -15,6 +15,7 @@ import {
 } from "@ionic/angular/standalone";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
+import { Preferences } from "@capacitor/preferences";
 
 @Component({
   selector: "app-login",
@@ -53,6 +54,7 @@ export class LoginComponent {
       this.authService.login({ username: username, password }).subscribe({
         next: async () => {
           await loading.dismiss();
+          await Preferences.set({ key: "user", value: username });
           await this.showSuccessToast("Login successful!");
           this.router.navigate(["/dashboard"]);
         },

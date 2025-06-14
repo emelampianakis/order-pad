@@ -88,7 +88,9 @@ export class TableDetailsComponent implements OnInit {
   }
 
   goToOrderDetails(order: any) {
-    this.router.navigate(["/order", order.id]);
+    this.router.navigate(["/order", order.id], {
+      state: { table: this.selectedTable, order: order },
+    });
   }
 
   async openAddOrderModal() {
@@ -101,7 +103,7 @@ export class TableDetailsComponent implements OnInit {
     return await modal.present();
   }
 
-  getStatusClasses(status: string): string {
+  getStatusClassName(status: string): string {
     return status.replace(/ /g, "");
   }
 }

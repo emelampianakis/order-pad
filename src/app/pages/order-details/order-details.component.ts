@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Location } from "@angular/common";
 import {
   IonContent,
@@ -10,7 +10,11 @@ import {
   IonItem,
   IonLabel,
   AlertController,
+  LoadingController,
 } from "@ionic/angular/standalone";
+import { DataService } from "src/app/services/data.service";
+import { finalize } from "rxjs";
+
 @Component({
   selector: "app-order-details",
   templateUrl: "./order-details.component.html",
@@ -28,48 +32,56 @@ import {
 })
 export class OrderDetailsComponent implements OnInit {
   order: any;
+  selectedTable: any;
+  selectedOrder: any;
 
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private dataService: DataService,
+    private loadingController: LoadingController,
+    private router: Router
   ) {}
 
   ngOnInit() {
     const orderId = this.route.snapshot.paramMap.get("id");
-
-    // Simulated fetch (replace with real service call)
-    this.loadOrder(orderId);
+    this.fetchOrder(orderId);
+    const navigation = this.router.getCurrentNavigation();
+    this.selectedTable = navigation?.extras.state?.["table"];
+    this.selectedOrder = navigation?.extras.state?.["order"];
   }
 
   goBack() {
     this.location.back();
   }
 
-  loadOrder(id: string | null) {
-    // Replace with actual data source or API call
-    this.order = {
-      id: id || "unknown",
-      status: "open",
-      user: "George",
-      tableName: "Table 4",
-      date: "2025-05-15 20:32",
-      total: 62.5,
-      products: [
-        { name: "Pizza Margherita", quantity: 2, price: 12 },
-        { name: "Coke", quantity: 3, price: 2.5 },
-        { name: "Tiramisu", quantity: 1, price: 6 },
-        { name: "Pizza Margherita", quantity: 2, price: 12 },
-        { name: "Coke", quantity: 3, price: 2.5 },
-        { name: "Tiramisu", quantity: 1, price: 6 },
-        { name: "Pizza Margherita", quantity: 2, price: 12 },
-        { name: "Coke", quantity: 3, price: 2.5 },
-        { name: "Tiramisu", quantity: 1, price: 6 },
-        { name: "Pizza Margherita", quantity: 2, price: 12 },
-        { name: "Coke", quantity: 3, price: 2.5 },
-        { name: "Tiramisu", quantity: 1, price: 6 },
-      ],
-    };
+  async fetchOrder(id: any) {
+    const loading = await this.loadingController.create({
+      message: "Loading order details...",
+    });
+    await loading.present();
+    if (!id) {
+      console.error("No order ID found in route.");
+      await loading.dismiss();
+      return;
+    }
+    this.dataService
+      .getOrder(id)
+      .pipe(
+        finalize(() => {
+          loading.dismiss();
+        })
+      )
+      .subscribe({
+        next: async (res) => {
+          this.order = res.data;
+          console.log(res);
+        },
+        error: async (err: any) => {
+          console.error(err);
+        },
+      });
   }
 
   async deleteOrder() {
@@ -86,13 +98,39 @@ export class OrderDetailsComponent implements OnInit {
         {
           text: "Yes",
           handler: () => {
-            console.log("Order deleted");
-            this.goBack();
+            this.onDeleteOrder();
           },
         },
       ],
     });
 
     await alert.present();
+  }
+
+  async onDeleteOrder() {
+    const loading = await this.loadingController.create({
+      message: "Deleting order...",
+    });
+    await loading.present();
+    this.dataService
+      .deleteOrder(this.order.id)
+      .pipe(
+        finalize(() => {
+          loading.dismiss();
+        })
+      )
+      .subscribe({
+        next: async (res) => {
+          console.log(res);
+          this.goBack();
+        },
+        error: async (err: any) => {
+          console.error(err);
+        },
+      });
+  }
+
+  getStatusClassName(status: string): string {
+    return status.replace(/ /g, "");
   }
 }

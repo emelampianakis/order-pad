@@ -50,10 +50,10 @@
           border-radius: 50%;
           background-color: #666;
 
-          &.open {
+          &.available {
             background-color: #10dc60;
           }
-          &.closed {
+          &.notavailable {
             background-color: #eb445a;
           }
           &.reserved {
@@ -102,6 +102,13 @@
       }
     }
 
+    .order-meta-bottom {
+      display: flex;
+      justify-content: space-between;
+      font-size: 24px;
+      color: black;
+    }
+
     .order-id {
       font-size: 24px;
       display: flex;
@@ -135,5 +142,15 @@
       --background: white;
       border-radius: 5px;
     }
+  }
+
+  .paid {
+    color: green;
+    font-weight: bold;
+  }
+
+  .not-paid {
+    color: red;
+    font-weight: bold;
   }
 }

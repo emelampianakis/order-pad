@@ -64,13 +64,16 @@
             <!-- View 1 -->
             <ng-container *ngIf="columns === 1">
               <div class="status-row">
-                <div
-                  *ngFor="let status of statuses"
-                  class="status-pill"
-                  [ngClass]="getStatusClasses(status, table.status)"
-                >
-                  {{ status }}
+                <div style="display: flex">
+                  <div
+                    *ngFor="let status of statuses"
+                    class="status-pill"
+                    [ngClass]="getStatusClasses(status, table.status)"
+                  >
+                    {{ status }}
+                  </div>
                 </div>
+                <!-- <div>PAID</div> -->
               </div>
               <div class="info-row">
                 <div *ngIf="table.user" class="user">
@@ -91,7 +94,10 @@
             <!-- View 2 -->
             <ng-container *ngIf="columns === 2">
               <div style="display: flex; align-items: center; gap: 8px">
-                <div class="status-dot" [ngClass]="table.status"></div>
+                <div
+                  class="status-dot"
+                  [ngClass]="getStatusClassName(table.status)"
+                ></div>
                 {{ table.status }}
               </div>
 
@@ -109,7 +115,10 @@
 
             <!-- View 3 -->
             <ng-container *ngIf="columns === 3">
-              <div class="status-bar" [ngClass]="table.status"></div>
+              <div
+                class="status-bar"
+                [ngClass]="getStatusClassName(table.status)"
+              ></div>
               <div class="table-name">{{ table.label }}</div>
 
               <div *ngIf="table.user" class="user">
