@@ -18,6 +18,7 @@ import {
 import { AddOrderModalComponent } from "src/app/components/add-order-modal.component";
 import { DataService } from "src/app/services/data.service";
 import { finalize } from "rxjs";
+import { TransferOrderModalComponent } from "src/app/components/transfer-order-modal/transfer-order-modal.component";
 
 @Component({
   selector: "app-table-details",
@@ -105,5 +106,39 @@ export class TableDetailsComponent implements OnInit {
 
   getStatusClassName(status: string): string {
     return status.replace(/ /g, "");
+  }
+
+  async openTransferOrderModal() {
+    const modal = await this.modalCtrl.create({
+      component: (
+        await import(
+          "src/app/components/transfer-order-modal/transfer-order-modal.component"
+        )
+      ).TransferOrderModalComponent,
+      componentProps: {
+        orders: this.tableOrders,
+      },
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      handle: false,
+      cssClass: "transfer-modal",
+    });
+
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+
+    if (data?.transferred) {
+      this.fetchTableOrders(); // refresh list
+    }
+  }
+
+  async openPayOrderModal() {
+    //   const modal = await this.modalCtrl.create({
+    //     component: openPayOrderModal,
+    //     breakpoints: [0, 0.2, 0.8],
+    //     initialBreakpoint: 0.8,
+    //     handle: true,
+    //   });
+    //   return await modal.present();
   }
 }

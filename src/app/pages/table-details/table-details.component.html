@@ -42,7 +42,10 @@
       "
     >
       Orders
-      <div><ion-button>Transfer</ion-button><ion-button>Pay</ion-button></div>
+      <div>
+        <ion-button (click)="openTransferOrderModal()">Transfer</ion-button
+        ><ion-button (click)="openPayOrderModal()">Pay</ion-button>
+      </div>
     </div>
     <ion-list mode="ios">
       <ion-item

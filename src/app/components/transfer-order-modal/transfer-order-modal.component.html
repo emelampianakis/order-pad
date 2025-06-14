@@ -1,0 +1,62 @@
+<div class="modal-wrapper">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Transfer</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content scrollY="true">
+    <!-- Sticky Top -->
+    <div class="sticky-top">
+      <div class="top-controls">
+        <b>Select Orders</b>
+        <ion-checkbox [(ngModel)]="allChecked" (ionChange)="toggleAll()"
+          >ALL</ion-checkbox
+        >
+      </div>
+    </div>
+
+    <!-- Orders List -->
+    <ion-list>
+      <ion-item *ngFor="let order of orders" (click)="toggleOrder(order)">
+        <ion-label>
+          <div class="order-time">{{ order.createdAt | date: "HH:mm" }}</div>
+          <div class="order-meta">
+            {{ order.createdAt | date: "dd-MM-yyyy" }}<br />
+            {{ order.price | currency }}
+            <span class="not-paid">NOT PAID</span>
+          </div>
+        </ion-label>
+        <ion-checkbox slot="end" [checked]="isChecked(order)"></ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <!-- Footer -->
+  <ion-footer class="modal-footer">
+    <ion-item lines="none" class="footer-select">
+      <ion-select
+        mode="md"
+        [(ngModel)]="selectedTableId"
+        class="footer-select-control"
+        justify="end"
+        label="New Table:"
+        placeholder="Select Table"
+      >
+        <ion-select-option
+          *ngFor="let table of availableTables"
+          [value]="table.id"
+          >{{ table.label }}</ion-select-option
+        >
+      </ion-select>
+    </ion-item>
+
+    <ion-button
+      expand="block"
+      (click)="submitTransfer()"
+      [disabled]="!selectedTableId || selectedOrders.length === 0"
+    >
+      Transfer Orders
+    </ion-button>
+  </ion-footer>
+</div>
