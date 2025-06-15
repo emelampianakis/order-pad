@@ -1,7 +1,7 @@
 <div class="modal-wrapper">
   <ion-header>
     <ion-toolbar>
-      <ion-buttons mode="md" slot="start">
+      <ion-buttons mode="md" slot="start" *ngIf="this.breadcrumb.length > 0">
         <ion-button (click)="back()">
           <ion-icon name="chevron-back-outline"></ion-icon>
         </ion-button>
@@ -10,12 +10,26 @@
       <ion-title>Add Order</ion-title>
 
       <ion-buttons slot="end">
-        <ion-button mode="md" class="cart-button" (click)="toggleCartView()">
-          <ion-icon [name]="cartToggleIcon"></ion-icon>
-        </ion-button>
-        <ion-badge color="danger" *ngIf="cartItemCount > 0 && view !== 'cart'">
-          {{ cartItemCount }}
-        </ion-badge>
+        <div style="position: relative">
+          <ion-button mode="md" class="cart-button" (click)="toggleCartView()">
+            <ion-icon [name]="cartToggleIcon"></ion-icon>
+          </ion-button>
+          <ion-badge
+            *ngIf="cartItemCount > 0 && view !== 'cart'"
+            color="danger"
+            style="
+              position: absolute;
+              top: -4px;
+              right: -4px;
+              font-size: 10px;
+              padding: 2px 6px;
+              z-index: 10;
+              pointer-events: none;
+            "
+          >
+            {{ cartItemCount }}
+          </ion-badge>
+        </div>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -45,7 +59,7 @@
     <!-- Categories -->
     <ion-list
       mode="ios"
-      lines="none"
+      lines="full"
       *ngIf="!loading && view === 'categories'"
       class="categories-list"
     >
@@ -53,7 +67,6 @@
         button
         *ngFor="let cat of currentCategories"
         (click)="navigateToCategory(cat)"
-        lines="none"
       >
         {{ cat.label || cat.name }}
       </ion-item>
@@ -62,15 +75,11 @@
     <!-- Products -->
     <ion-list
       mode="ios"
-      lines="none"
+      lines="full"
       *ngIf="!loading && view === 'products'"
       class="product-list"
     >
-      <ion-item
-        *ngFor="let prod of currentProducts"
-        lines="none"
-        class="product-item"
-      >
+      <ion-item *ngFor="let prod of currentProducts" class="product-item">
         <ion-label>
           <div class="product-layout">
             <!-- Top Row -->

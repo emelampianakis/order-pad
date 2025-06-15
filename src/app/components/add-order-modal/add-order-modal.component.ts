@@ -191,6 +191,7 @@ export class AddOrderModalComponent {
     } else {
       this.cart.push({ ...product, quantity: qty });
     }
+    this.productQuantities[product.id] = 1;
   }
 
   removeFromCart(item: any) {
