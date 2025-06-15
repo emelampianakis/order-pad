@@ -1,6 +1,6 @@
 <ion-content class="table-details-content" fullscreen>
-  <!-- Back Button -->
   <ion-button
+    mode="md"
     fill="outline"
     (click)="goBack()"
     shape="round"
@@ -34,19 +34,28 @@
     <!-- Order Meta -->
     <div *ngIf="selectedOrder" class="order-meta-top">
       <div class="created-at">
-        Created at
-        <span>{{ selectedOrder.createdAt | date: "yyyy-MM-dd HH:mm" }}</span>
+        <span class="meta-label">Created at</span>
+        <span class="meta-value">{{
+          selectedOrder.createdAt | date: "yyyy-MM-dd HH:mm"
+        }}</span>
       </div>
       <div class="total">
-        Total Price <span>{{ selectedOrder.price | currency }}</span>
+        <span class="meta-label">Total Price</span>
+        <span class="meta-value meta-price">{{
+          selectedOrder.price | currency
+        }}</span>
       </div>
     </div>
 
     <div *ngIf="selectedOrder" class="order-meta-bottom">
       <div class="order-id">
-        Order ID <span>{{ selectedOrder.id }}</span>
+        <span class="meta-label">Order ID</span>
+        <span class="meta-value">{{ selectedOrder.id }}</span>
       </div>
-      <div [ngClass]="selectedOrder.paid ? 'paid' : 'not-paid'">
+      <div
+        style="display: flex; align-items: end"
+        [ngClass]="selectedOrder.paid ? 'paid' : 'not-paid'"
+      >
         {{ selectedOrder.paid ? "PAID" : "NOT PAID" }}
       </div>
     </div>

@@ -23,6 +23,9 @@ import {
   withInterceptorsFromDi,
 } from "@angular/common/http";
 import { AuthInterceptor } from "./app/interceptors/auth-interceptor.service";
+import { LOCALE_ID, DEFAULT_CURRENCY_CODE } from "@angular/core";
+import { registerLocaleData } from "@angular/common";
+import localeEl from "@angular/common/locales/el";
 
 if (environment.production) {
   enableProdMode();
@@ -39,6 +42,8 @@ addIcons({
   "cart-outline": cartOutline,
 });
 
+registerLocaleData(localeEl);
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
@@ -49,5 +54,7 @@ bootstrapApplication(AppComponent, {
       useClass: AuthInterceptor,
       multi: true,
     },
+    { provide: LOCALE_ID, useValue: "el" }, // Greek locale
+    { provide: DEFAULT_CURRENCY_CODE, useValue: "EUR" }, // Default currency: Euro
   ],
 });

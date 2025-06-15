@@ -109,6 +109,21 @@
       color: black;
     }
 
+    .meta-label {
+      color: #828282;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .meta-value {
+      font-size: 18px;
+    }
+
+    .meta-price {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
     .order-id {
       font-size: 24px;
       display: flex;
