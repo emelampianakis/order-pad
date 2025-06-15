@@ -74,7 +74,12 @@
           </div>
 
           <div class="product-actions">
-            <ion-button size="small" fill="outline" (click)="viewProduct(prod)">
+            <ion-button
+              mode="md"
+              size="small"
+              fill="outline"
+              (click)="viewProduct(prod)"
+            >
               View
             </ion-button>
 
@@ -98,6 +103,7 @@
               >
 
               <ion-button
+                mode="md"
                 size="small"
                 color="success"
                 (click)="addToCart(prod)"
@@ -117,7 +123,7 @@
       <p>
         <strong>{{ selectedProduct?.price | currency }}</strong>
       </p>
-      <ion-button expand="block" (click)="addToCart(selectedProduct)">
+      <ion-button mode="md" expand="block" (click)="addToCart(selectedProduct)">
         Add to Cart
       </ion-button>
     </div>
@@ -182,21 +188,22 @@
         </ion-item>
 
         <ion-button
+          mode="md"
           expand="block"
-          color="primary"
           (click)="submitOrder()"
           [disabled]="loading || cart.length === 0"
+          class="primary-button"
         >
           <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
           <span *ngIf="!loading">Complete Order</span>
         </ion-button>
 
         <ion-button
+          mode="md"
           expand="block"
-          color="medium"
-          fill="outline"
           (click)="clearCart()"
           [disabled]="cart.length === 0"
+          class="danger-button"
         >
           Clear Cart
         </ion-button>

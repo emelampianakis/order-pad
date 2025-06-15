@@ -34,12 +34,22 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+// @import "@ionic/angular/css/palettes/dark.system.css";
 
 .light-button {
   --background: #7dd3fce5;
   color: black;
   --border-color: transparent;
+}
+
+.primary-button {
+  --background: #0369a1;
+  color: white;
+}
+
+.danger-button {
+  --background: #bae6fd;
+  color: #b3261e;
 }
 
 .user {

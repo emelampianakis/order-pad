@@ -39,9 +39,11 @@
 
   <ion-footer class="modal-footer">
     <ion-button
+      mode="md"
       expand="block"
       (click)="submitPayment()"
       [disabled]="selectedOrders.length === 0"
+      class="primary-button"
     >
       Payment
     </ion-button>

@@ -43,8 +43,17 @@
     >
       Orders
       <div>
-        <ion-button (click)="openTransferOrderModal()">Transfer</ion-button
-        ><ion-button (click)="openPayOrderModal()">Pay</ion-button>
+        <ion-button
+          mode="md"
+          class="primary-button"
+          (click)="openTransferOrderModal()"
+          >Transfer</ion-button
+        ><ion-button
+          mode="md"
+          class="primary-button"
+          (click)="openPayOrderModal()"
+          >Pay</ion-button
+        >
       </div>
     </div>
     <ion-list mode="ios">

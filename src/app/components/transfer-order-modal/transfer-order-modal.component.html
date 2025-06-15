@@ -54,9 +54,11 @@
     </ion-item>
 
     <ion-button
+      mode="md"
       expand="block"
       (click)="submitTransfer()"
       [disabled]="!selectedTableId || selectedOrders.length === 0"
+      class="primary-button"
     >
       Transfer Orders
     </ion-button>
