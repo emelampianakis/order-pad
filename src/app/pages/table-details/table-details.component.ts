@@ -56,7 +56,7 @@ export class TableDetailsComponent implements OnInit {
     this.selectedTable = navigation?.extras.state?.["table"];
   }
 
-  ngAfterViewInit() {
+  ionViewWillEnter() {
     this.fetchTableOrders();
   }
 

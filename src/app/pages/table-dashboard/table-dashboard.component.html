@@ -57,12 +57,17 @@
     </div>
 
     <!-- Scrollable Grid Area -->
-    <div class="tables-container">
+    <div
+      #scrollArea
+      class="tables-container"
+      (scroll)="onScroll()"
+      style="overflow-y: auto"
+    >
       <div
         class="table-grid"
         [ngStyle]="{ 'grid-template-columns': 'repeat(' + columns + ', 1fr)' }"
       >
-        <ng-container *ngFor="let table of filteredTables">
+        <ng-container *ngFor="let table of tables">
           <div
             class="table-card"
             [ngClass]="'view-' + columns"
@@ -140,16 +145,6 @@
           </div>
         </ng-container>
       </div>
-      <ion-infinite-scroll
-        threshold="100px"
-        (ionInfinite)="loadMore($event)"
-        [disabled]="!hasMore || loading"
-      >
-        <ion-infinite-scroll-content
-          loadingSpinner="dots"
-          loadingText="Loading more tables..."
-        ></ion-infinite-scroll-content>
-      </ion-infinite-scroll>
     </div>
   </div>
 </ion-content>

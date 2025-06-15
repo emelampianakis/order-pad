@@ -23,7 +23,20 @@ export class DataService {
       sortingOrder?: string;
     } = {}
   ): Observable<any> {
-    return this.http.get(`${this.apiUrl}/tables`, { params });
+    const cleanedParams: any = {};
+
+    Object.keys(params).forEach((key) => {
+      const value = params[key as keyof typeof params];
+      if (
+        value !== undefined &&
+        value !== null &&
+        !(typeof value === "string" && value.trim() === "")
+      ) {
+        cleanedParams[key] = value;
+      }
+    });
+
+    return this.http.get(`${this.apiUrl}/tables`, { params: cleanedParams });
   }
 
   getTablesArray(): Observable<any> {

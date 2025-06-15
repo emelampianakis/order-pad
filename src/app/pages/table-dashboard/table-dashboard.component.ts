@@ -1,8 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, ElementRef, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-
 import {
   IonContent,
   IonButton,
@@ -12,12 +11,12 @@ import {
   IonSearchbar,
   AlertController,
   LoadingController,
-  IonInfiniteScroll,
-  IonInfiniteScrollContent,
 } from "@ionic/angular/standalone";
+
 import { DataService } from "src/app/services/data.service";
 import { AuthService } from "src/app/services/auth.service";
 import { Preferences } from "@capacitor/preferences";
+
 interface Table {
   id: number;
   label: string;
@@ -38,23 +37,20 @@ interface Table {
     IonSegment,
     IonSegmentButton,
     IonSearchbar,
-    IonInfiniteScroll,
-    IonInfiniteScrollContent,
   ],
   templateUrl: "./table-dashboard.component.html",
   styleUrls: ["./table-dashboard.component.scss"],
 })
 export class TableDashboardComponent {
+  @ViewChild("scrollArea") scrollArea?: ElementRef;
+
   username: any;
-
   filter: "all" | "available" | "not available" = "all";
-
   searchTerm = "";
   columns = 1;
-
   statuses = ["available", "not available"];
-
   currency = "€";
+
   tables: Table[] = [];
   page = 1;
   limit = 20;
@@ -69,17 +65,19 @@ export class TableDashboardComponent {
     private authService: AuthService
   ) {}
 
-  ngOnInit() {}
-
   async ionViewWillEnter() {
     this.username = (await Preferences.get({ key: "user" })).value;
-    // this.fetchUser();
-    this.fetchTables();
+    this.fetchTables(true);
   }
-  get filteredTables(): Table[] {
-    return this.tables
-      .filter((t) => (this.filter === "all" ? true : t.status === this.filter))
-      .filter((t) => t.label.toString().includes(this.searchTerm.trim()));
+
+  onScroll(): void {
+    const el = this.scrollArea?.nativeElement;
+    if (!el || this.loading || !this.hasMore) return;
+
+    const scrollBottom = el.scrollTop + el.clientHeight;
+    if (scrollBottom >= el.scrollHeight - 50) {
+      this.fetchTables(false);
+    }
   }
 
   cycleColumns() {
@@ -87,27 +85,19 @@ export class TableDashboardComponent {
   }
 
   get currentIcon(): string {
-    switch (this.columns) {
-      case 1:
-        return "list-outline";
-      case 2:
-        return "grid-outline";
-      case 3:
-        return "apps-outline";
-      default:
-        return "list-outline";
-    }
+    return this.columns === 1
+      ? "list-outline"
+      : this.columns === 2
+        ? "grid-outline"
+        : "apps-outline";
   }
 
   getStatusClasses(
     status: string,
     tableStatus: string
   ): { [klass: string]: boolean } {
-    const sanitizedStatus = status.replace(/\s+/g, "");
-    return {
-      [sanitizedStatus]: true,
-      active: status === tableStatus,
-    };
+    const s = status.replace(/\s+/g, "");
+    return { [s]: true, active: status === tableStatus };
   }
 
   getStatusClassName(status: string): string {
@@ -115,9 +105,7 @@ export class TableDashboardComponent {
   }
 
   goToTableDetails(table: Table) {
-    this.router.navigate(["/table", table.id], {
-      state: { table: table },
-    });
+    this.router.navigate(["/table", table.id], { state: { table } });
   }
 
   async logOut() {
@@ -125,11 +113,7 @@ export class TableDashboardComponent {
       header: "Confirm Logout",
       message: "Are you sure you want to log out?",
       buttons: [
-        {
-          text: "Cancel",
-          role: "cancel",
-          handler: () => {},
-        },
+        { text: "Cancel", role: "cancel" },
         {
           text: "Log Out",
           handler: () => {
@@ -139,7 +123,6 @@ export class TableDashboardComponent {
         },
       ],
     });
-
     await alert.present();
   }
 
@@ -154,10 +137,12 @@ export class TableDashboardComponent {
 
     this.loading = true;
 
-    const loadingCtrl = await this.loadingController.create({
-      message: "Loading tables...",
-    });
-    await loadingCtrl.present();
+    const loadingCtrl =
+      this.page === 1
+        ? await this.loadingController.create({ message: "Loading tables..." })
+        : null;
+
+    if (loadingCtrl) await loadingCtrl.present();
 
     this.dataService
       .getTables({
@@ -168,26 +153,21 @@ export class TableDashboardComponent {
       })
       .subscribe({
         next: async (res) => {
-          await loadingCtrl.dismiss();
+          if (loadingCtrl) await loadingCtrl.dismiss();
           const items = res.data.items || [];
 
-          this.tables = [...this.tables, ...items];
+          this.tables = reset ? items : [...this.tables, ...items];
           this.hasMore = items.length === this.limit;
           this.page++;
+
           this.loading = false;
         },
         error: async (err) => {
-          console.error(err);
-          await loadingCtrl.dismiss();
+          if (loadingCtrl) await loadingCtrl.dismiss();
           this.loading = false;
+          console.error("Error fetching tables:", err);
         },
       });
-  }
-
-  loadMore(event: any) {
-    this.fetchTables().then(() => {
-      event.target.complete();
-    });
   }
 
   onSearchChange() {
@@ -196,17 +176,5 @@ export class TableDashboardComponent {
 
   onFilterChange() {
     this.fetchTables(true);
-  }
-
-  async fetchUser() {
-    // Not Used atm
-    this.dataService.getUser().subscribe({
-      next: async (res) => {
-        console.log(res);
-      },
-      error: async (err: any) => {
-        console.error(err);
-      },
-    });
   }
 }

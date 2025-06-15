@@ -43,11 +43,13 @@
       Orders
       <div>
         <ion-button
+          [disabled]="tableOrders.length === 0"
           mode="md"
           class="primary-button"
           (click)="openTransferOrderModal()"
           >Transfer</ion-button
         ><ion-button
+          [disabled]="tableOrders.length === 0"
           mode="md"
           class="primary-button"
           (click)="openPayOrderModal()"
@@ -76,7 +78,7 @@
       </ion-item>
     </ion-list>
   </div>
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab mode="md" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="openAddOrderModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
