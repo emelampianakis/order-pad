@@ -79,7 +79,7 @@
       *ngIf="!loading && view === 'products'"
       class="product-list"
     >
-      <ion-item *ngFor="let prod of currentProducts" class="product-item">
+      <ion-item *ngFor="let prod of currentProducts">
         <ion-label>
           <div class="product-layout">
             <!-- Top Row -->
@@ -139,17 +139,33 @@
 
     <!-- Product Detail -->
     <div *ngIf="!loading && view === 'product-details'" class="product-detail">
-      <h2>{{ selectedProduct?.label }}</h2>
-      <p>{{ selectedProduct?.description }}</p>
-      <p>
-        <strong>{{ selectedProduct?.price | currency }}</strong>
-      </p>
-      <ion-button mode="md" expand="block" (click)="addToCart(selectedProduct)">
+      <div class="product-label">{{ selectedProduct?.label }}</div>
+      <div class="product-description">{{ selectedProduct?.description }}</div>
+      <div class="product-price">
+        {{ selectedProduct?.price | currency }}
+      </div>
+
+      <ion-textarea
+        mode="md"
+        label="Comments"
+        labelPlacement="floating"
+        auto-grow="true"
+        placeholder="Optional notes for this product..."
+        fill="outline"
+        [value]="productNote"
+        (ionInput)="onNoteChange($event)"
+      ></ion-textarea>
+
+      <ion-button
+        class="primary-button"
+        mode="md"
+        expand="block"
+        (click)="addToCart(selectedProduct)"
+      >
         Add to Cart
       </ion-button>
     </div>
 
-    <!-- Cart -->
     <!-- Cart -->
     <div *ngIf="!loading && view === 'cart'" class="cart-container">
       <div class="cart-item" *ngFor="let item of cart">

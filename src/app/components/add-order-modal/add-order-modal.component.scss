@@ -45,15 +45,33 @@ p {
 }
 
 .product-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 16px;
-  text-align: center;
-
-  h2 {
-    margin-bottom: 8px;
+  .product-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+  }
+  .product-description {
+    font-size: 14px;
+    color: #666;
+  }
+  .product-price {
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    text-align: right;
   }
 
-  p {
-    margin: 6px 0;
+  ion-textarea {
+    --border-color: #7dd3fce5;
+    --highlight-color-focused: #0369a1; // floating label color when focused
+  }
+
+  ion-textarea::part(label) {
+    color: #0369a1; // label color when not focused
   }
 }
 
@@ -99,22 +117,23 @@ ion-list {
     padding: 8px 0;
   }
 }
+
+ion-textarea {
+  --background: #f9f9f9;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 14px;
+}
+
 .product-list {
   ion-item {
-    padding: 16px;
+    padding: 8px 16px;
     --background: white;
   }
 
   ion-item::part(native) {
     border: 1px solid #7dd3fce5;
   }
-}
-
-.product-item {
-  --background: white;
-  padding: 16px;
-  border: 1px solid #7dd3fce5;
-  margin-bottom: 10px;
 }
 
 .product-layout {
@@ -164,6 +183,10 @@ ion-list {
 .product-actions {
   display: flex;
   gap: 8px;
+}
+
+.cart-button {
+  --color: #0369a1;
 }
 
 .cart-container {

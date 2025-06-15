@@ -20,6 +20,7 @@ import {
   IonSelectOption,
   IonCheckbox,
   AlertController,
+  IonTextarea,
 } from "@ionic/angular/standalone";
 import { FormsModule } from "@angular/forms";
 import { DataService } from "src/app/services/data.service";
@@ -48,6 +49,8 @@ import { firstValueFrom } from "rxjs";
     IonSelect,
     IonSelectOption,
     IonCheckbox,
+    FormsModule,
+    IonTextarea,
   ],
   templateUrl: "./add-order-modal.component.html",
   styleUrls: ["./add-order-modal.component.scss"],
@@ -66,6 +69,11 @@ export class AddOrderModalComponent {
   selectedTableId: string | null = null;
   isPaid = false;
   availableTables: any[] = [];
+  productNote: string = "";
+
+  onNoteChange(event: any) {
+    this.productNote = event.detail.value;
+  }
 
   constructor(
     private dataService: DataService,
@@ -186,12 +194,23 @@ export class AddOrderModalComponent {
   addToCart(product: any) {
     const qty = this.getQuantity(product);
     const existing = this.cart.find((p) => p.id === product.id);
+
     if (existing) {
       existing.quantity += qty;
+      // Optionally append notes
+      if (this.productNote) {
+        existing.notes = (existing.notes || "") + "\n" + this.productNote;
+      }
     } else {
-      this.cart.push({ ...product, quantity: qty });
+      this.cart.push({
+        ...product,
+        quantity: qty,
+        notes: this.productNote || "",
+      });
     }
-    this.productQuantities[product.id] = 1;
+
+    // Reset note field after adding
+    this.productNote = "";
   }
 
   removeFromCart(item: any) {
