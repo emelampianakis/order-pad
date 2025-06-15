@@ -11,6 +11,7 @@ import { AlertController, LoadingController } from "@ionic/angular/standalone";
 export class AuthService {
   private apiUrl = "https://www.florder.gr:3100";
   private accessTokenKey = "access_token";
+  private refreshTokenKey = "refresh_token";
   private dbKey = "db";
 
   constructor(
@@ -33,6 +34,10 @@ export class AuthService {
           key: this.accessTokenKey,
           value: res.accessToken,
         });
+        await Preferences.set({
+          key: this.refreshTokenKey,
+          value: res.refreshToken,
+        });
         await Preferences.set({ key: this.dbKey, value: res.db });
         return res;
       })
@@ -48,14 +53,19 @@ export class AuthService {
     return result.value;
   }
 
+  async getRefreshToken(): Promise<string | null> {
+    const { value } = await Preferences.get({ key: this.refreshTokenKey });
+    return value || null;
+  }
+
   async getDb(): Promise<string | null> {
     const result = await Preferences.get({ key: this.dbKey });
     return result.value;
   }
 
   async refreshToken(): Promise<string | null> {
-    const expiredToken = await this.getAccessToken();
-    if (!expiredToken) {
+    const refreshToken = await this.getRefreshToken();
+    if (!refreshToken) {
       await this.onSessionExpired();
       return null;
     }
@@ -63,7 +73,7 @@ export class AuthService {
     try {
       const response = await firstValueFrom(
         this.http.post<any>(`${this.apiUrl}/auth/refresh-token`, {
-          refreshToken: expiredToken,
+          refreshToken,
         })
       );
 
@@ -71,6 +81,13 @@ export class AuthService {
         key: this.accessTokenKey,
         value: response.accessToken,
       });
+
+      if (response.refreshToken) {
+        await Preferences.set({
+          key: this.refreshTokenKey,
+          value: response.refreshToken,
+        });
+      }
 
       return response.accessToken;
     } catch (error) {
