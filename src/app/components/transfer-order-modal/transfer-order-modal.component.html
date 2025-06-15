@@ -19,14 +19,16 @@
     <!-- Orders List -->
     <ion-list mode="ios" lines="none">
       <ion-item *ngFor="let order of orders" (click)="toggleOrder(order)">
-        <ion-label>
+        <ion-label class="order-label">
           <div class="order-time">{{ order.createdAt | date: "HH:mm" }}</div>
           <div class="order-meta">
-            {{ order.createdAt | date: "dd-MM-yyyy" }}<br />
-            {{ order.price | currency }}
-            <div [ngClass]="order.paid ? 'paid' : 'not-paid'">
-              {{ order.paid ? "PAID" : "NOT PAID" }}
-            </div>
+            <span>{{ order.createdAt | date: "yyyy-MM-dd" }}</span>
+            <span style="display: flex; gap: 8px">
+              {{ order.price | currency }}
+              <div [ngClass]="order.paid ? 'paid' : 'not-paid'">
+                {{ order.paid ? "PAID" : "NOT PAID" }}
+              </div>
+            </span>
           </div>
         </ion-label>
         <ion-checkbox slot="end" [checked]="isChecked(order)"></ion-checkbox>
