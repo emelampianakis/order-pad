@@ -12,6 +12,8 @@ import {
   IonSearchbar,
   AlertController,
   LoadingController,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
 } from "@ionic/angular/standalone";
 import { DataService } from "src/app/services/data.service";
 import { AuthService } from "src/app/services/auth.service";
@@ -36,6 +38,8 @@ interface Table {
     IonSegment,
     IonSegmentButton,
     IonSearchbar,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
   ],
   templateUrl: "./table-dashboard.component.html",
   styleUrls: ["./table-dashboard.component.scss"],
@@ -52,6 +56,10 @@ export class TableDashboardComponent {
 
   currency = "€";
   tables: Table[] = [];
+  page = 1;
+  limit = 20;
+  hasMore = true;
+  loading = false;
 
   constructor(
     private router: Router,
@@ -135,22 +143,59 @@ export class TableDashboardComponent {
     await alert.present();
   }
 
-  async fetchTables() {
-    const loading = await this.loadingController.create({
+  async fetchTables(reset = false) {
+    if (this.loading) return;
+
+    if (reset) {
+      this.page = 1;
+      this.tables = [];
+      this.hasMore = true;
+    }
+
+    this.loading = true;
+
+    const loadingCtrl = await this.loadingController.create({
       message: "Loading tables...",
     });
-    await loading.present();
+    await loadingCtrl.present();
 
-    this.dataService.getTables().subscribe({
-      next: async (res) => {
-        await loading.dismiss();
-        this.tables = res.data.items || [];
-      },
-      error: async (err: any) => {
-        console.error(err);
-        await loading.dismiss();
-      },
+    this.dataService
+      .getTables({
+        page: this.page,
+        limit: this.limit,
+        search: this.searchTerm.trim(),
+        status: this.filter !== "all" ? this.filter : undefined,
+      })
+      .subscribe({
+        next: async (res) => {
+          await loadingCtrl.dismiss();
+          const items = res.data.items || [];
+
+          this.tables = [...this.tables, ...items];
+          this.hasMore = items.length === this.limit;
+          this.page++;
+          this.loading = false;
+        },
+        error: async (err) => {
+          console.error(err);
+          await loadingCtrl.dismiss();
+          this.loading = false;
+        },
+      });
+  }
+
+  loadMore(event: any) {
+    this.fetchTables().then(() => {
+      event.target.complete();
     });
+  }
+
+  onSearchChange() {
+    this.fetchTables(true);
+  }
+
+  onFilterChange() {
+    this.fetchTables(true);
   }
 
   async fetchUser() {

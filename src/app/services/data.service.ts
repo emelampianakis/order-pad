@@ -13,8 +13,17 @@ export class DataService {
   }
 
   // Tables
-  getTables(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/tables`);
+  getTables(
+    params: {
+      page?: number;
+      limit?: number;
+      search?: string;
+      status?: string;
+      sortBy?: string;
+      sortingOrder?: string;
+    } = {}
+  ): Observable<any> {
+    return this.http.get(`${this.apiUrl}/tables`, { params });
   }
 
   getTablesArray(): Observable<any> {

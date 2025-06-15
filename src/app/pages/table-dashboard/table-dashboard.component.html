@@ -33,7 +33,11 @@
         </ion-button>
       </div>
 
-      <ion-segment mode="ios" [(ngModel)]="filter">
+      <ion-segment
+        mode="ios"
+        [(ngModel)]="filter"
+        (ionChange)="onFilterChange()"
+      >
         <ion-segment-button value="all">All</ion-segment-button>
         <ion-segment-button value="available">Available</ion-segment-button>
         <ion-segment-button value="not available"
@@ -44,7 +48,8 @@
 
       <ion-searchbar
         [(ngModel)]="searchTerm"
-        debounce="300"
+        (ionInput)="onSearchChange()"
+        debounce="500"
         placeholder="Search Tables"
         class="custom-searchbar"
         mode="ios"
@@ -135,6 +140,16 @@
           </div>
         </ng-container>
       </div>
+      <ion-infinite-scroll
+        threshold="100px"
+        (ionInfinite)="loadMore($event)"
+        [disabled]="!hasMore || loading"
+      >
+        <ion-infinite-scroll-content
+          loadingSpinner="dots"
+          loadingText="Loading more tables..."
+        ></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </div>
   </div>
 </ion-content>
