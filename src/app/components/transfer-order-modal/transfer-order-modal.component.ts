@@ -55,8 +55,8 @@ export class TransferOrderModalComponent {
   ) {}
 
   async ngOnInit() {
-    const res = await firstValueFrom(this.dataService.getTables());
-    this.availableTables = res.data.items || [];
+    const res = await firstValueFrom(this.dataService.getTablesArray());
+    this.availableTables = res.data || [];
   }
 
   toggleAll() {

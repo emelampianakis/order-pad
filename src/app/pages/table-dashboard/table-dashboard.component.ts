@@ -154,6 +154,7 @@ export class TableDashboardComponent {
   }
 
   async fetchUser() {
+    // Not Used atm
     this.dataService.getUser().subscribe({
       next: async (res) => {
         console.log(res);

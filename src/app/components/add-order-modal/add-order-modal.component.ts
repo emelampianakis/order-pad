@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
   IonButton,
@@ -53,6 +53,8 @@ import { firstValueFrom } from "rxjs";
   styleUrls: ["./add-order-modal.component.scss"],
 })
 export class AddOrderModalComponent {
+  @Input() initialSelectedTable: any = null;
+
   breadcrumb: { id: string; name: string }[] = [];
   currentCategories: any[] = [];
   currentProducts: any[] = [];
@@ -73,9 +75,9 @@ export class AddOrderModalComponent {
 
   async ngOnInit() {
     await this.loadRootCategories();
-    const res = await firstValueFrom(this.dataService.getTables());
-    this.availableTables = res.data.items || [];
-    this.selectedTableId = this.availableTables[0]?.id || null;
+    const res = await firstValueFrom(this.dataService.getTablesArray());
+    this.availableTables = res.data || [];
+    this.selectedTableId = this.initialSelectedTable?.id || null;
   }
 
   async loadRootCategories() {
@@ -273,11 +275,57 @@ export class AddOrderModalComponent {
     return this.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
   }
 
-  confirmOrder() {
-    this.modalCtrl.dismiss({
-      cart: this.cart,
-      tableId: this.selectedTableId,
-      isPaid: this.isPaid,
-    });
+  async submitOrder() {
+    if (!this.selectedTableId || this.cart.length === 0) {
+      const alert = await this.alertCtrl.create({
+        header: "Missing Information",
+        message:
+          "Please select a table and add at least one product to the cart.",
+        buttons: ["OK"],
+      });
+      await alert.present();
+      return;
+    }
+
+    const payload = {
+      status: this.isPaid ? "completed" : "pending",
+      price: this.getCartTotal(),
+      table: {
+        id: this.selectedTableId,
+      },
+      products: this.cart.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+        notes: item.notes || "", // Optional: support inline notes later
+        productAttributes: item.productAttributes || [], // Placeholder for future
+      })),
+    };
+
+    try {
+      this.loading = true;
+      const res = await firstValueFrom(this.dataService.createOrder(payload));
+      this.loading = false;
+
+      const alert = await this.alertCtrl.create({
+        header: "Success",
+        message: "Order has been created successfully.",
+        buttons: [
+          {
+            text: "OK",
+            handler: () => this.modalCtrl.dismiss({ success: true }),
+          },
+        ],
+      });
+
+      await alert.present();
+    } catch (error) {
+      this.loading = false;
+      const alert = await this.alertCtrl.create({
+        header: "Error",
+        message: "Failed to create order. Please try again.",
+        buttons: ["OK"],
+      });
+      await alert.present();
+    }
   }
 }

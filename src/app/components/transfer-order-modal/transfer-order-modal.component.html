@@ -24,7 +24,9 @@
           <div class="order-meta">
             {{ order.createdAt | date: "dd-MM-yyyy" }}<br />
             {{ order.price | currency }}
-            <span class="not-paid">NOT PAID</span>
+            <div [ngClass]="order.paid ? 'paid' : 'not-paid'">
+              {{ order.paid ? "PAID" : "NOT PAID" }}
+            </div>
           </div>
         </ion-label>
         <ion-checkbox slot="end" [checked]="isChecked(order)"></ion-checkbox>

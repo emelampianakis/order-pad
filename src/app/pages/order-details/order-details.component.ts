@@ -76,7 +76,6 @@ export class OrderDetailsComponent implements OnInit {
       .subscribe({
         next: async (res) => {
           this.order = res.data;
-          console.log(res);
         },
         error: async (err: any) => {
           console.error(err);
@@ -113,7 +112,7 @@ export class OrderDetailsComponent implements OnInit {
     });
     await loading.present();
     this.dataService
-      .deleteOrder(this.order.id)
+      .cancelOrder(this.order.id)
       .pipe(
         finalize(() => {
           loading.dismiss();
@@ -121,7 +120,6 @@ export class OrderDetailsComponent implements OnInit {
       )
       .subscribe({
         next: async (res) => {
-          console.log(res);
           this.goBack();
         },
         error: async (err: any) => {

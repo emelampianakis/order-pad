@@ -17,6 +17,12 @@ export class DataService {
     return this.http.get(`${this.apiUrl}/tables`);
   }
 
+  getTablesArray(): Observable<any> {
+    return this.http.get(
+      `${this.apiUrl}/tables/find-all-selecting-id-and-label`
+    );
+  }
+
   getTableOrders(tableId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/tables/${tableId}/orders`);
   }
@@ -30,8 +36,8 @@ export class DataService {
     return this.http.get(`${this.apiUrl}/orders/${orderId}`);
   }
 
-  deleteOrder(orderId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/orders/${orderId}`);
+  cancelOrder(orderId: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/orders/${orderId}/cancel`, {});
   }
 
   updatePaidStatus(payload: any): Observable<any> {

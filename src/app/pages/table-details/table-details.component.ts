@@ -101,8 +101,10 @@ export class TableDetailsComponent implements OnInit {
   async openAddOrderModal() {
     const modal = await this.modalCtrl.create({
       component: AddOrderModalComponent,
-
-      breakpoints: [1],
+      componentProps: {
+        initialSelectedTable: this.selectedTable,
+      },
+      breakpoints: [0, 1],
       initialBreakpoint: 1,
       handle: false,
       cssClass: "custom-sheet-modal",
@@ -110,11 +112,12 @@ export class TableDetailsComponent implements OnInit {
     });
 
     await modal.present();
+
     const { data } = await modal.onDidDismiss();
-    console.log(data);
-    // if (data?.paid) {
-    //   this.fetchTableOrders();
-    // }
+
+    if (data?.success) {
+      this.fetchTableOrders();
+    }
   }
 
   getStatusClassName(status: string): string {
@@ -127,7 +130,7 @@ export class TableDetailsComponent implements OnInit {
       componentProps: {
         orders: this.tableOrders,
       },
-      breakpoints: [1],
+      breakpoints: [0, 1],
       initialBreakpoint: 1,
       handle: false,
       cssClass: "custom-sheet-modal",
@@ -138,7 +141,7 @@ export class TableDetailsComponent implements OnInit {
     const { data } = await modal.onDidDismiss();
 
     if (data?.transferred) {
-      this.fetchTableOrders(); // refresh list
+      this.fetchTableOrders();
     }
   }
 
@@ -148,7 +151,7 @@ export class TableDetailsComponent implements OnInit {
       componentProps: {
         orders: this.tableOrders.filter((o) => !o.paid),
       },
-      breakpoints: [1],
+      breakpoints: [0, 1],
       initialBreakpoint: 1,
       handle: false,
       cssClass: "custom-sheet-modal",
