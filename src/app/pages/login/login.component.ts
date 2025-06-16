@@ -12,6 +12,7 @@ import {
   IonButton,
   ToastController,
   LoadingController,
+  IonInputPasswordToggle,
 } from "@ionic/angular/standalone";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
@@ -20,7 +21,14 @@ import { Preferences } from "@capacitor/preferences";
 @Component({
   selector: "app-login",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, IonContent, IonInput, IonButton],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    IonContent,
+    IonInput,
+    IonButton,
+    IonInputPasswordToggle,
+  ],
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
