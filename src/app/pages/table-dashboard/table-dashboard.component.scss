@@ -1,7 +1,4 @@
 .dashboard-content {
-  --padding-top: 0;
-  --padding-bottom: 0;
-
   .dashboard-wrapper {
     display: flex;
     flex-direction: column;
@@ -20,7 +17,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 24px 0;
+      padding: calc(env(safe-area-inset-top, 0)) 0 24px 0;
     }
 
     ion-segment {
@@ -56,7 +53,7 @@
     flex: 1;
     overflow-y: auto;
     background: #e1eff4;
-    padding: 20px 16px 8px 16px;
+    padding: 20px 16px calc(16px + env(safe-area-inset-bottom, 8px)) 16px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
   }

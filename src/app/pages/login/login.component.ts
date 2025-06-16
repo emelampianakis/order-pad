@@ -17,6 +17,7 @@ import {
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { Preferences } from "@capacitor/preferences";
+import { StatusBar, Style } from "@capacitor/status-bar";
 
 @Component({
   selector: "app-login",
@@ -47,6 +48,18 @@ export class LoginComponent {
       username: ["", Validators.required],
       password: ["", Validators.required],
     });
+  }
+
+  async ionViewWillEnter() {
+    try {
+      await StatusBar.setBackgroundColor({ color: "#e1eff4" });
+      await StatusBar.setStyle({ style: Style.Light });
+    } catch (err) {}
+  }
+
+  async ionViewWillLeave() {
+    await StatusBar.setBackgroundColor({ color: "#06b6d4" });
+    await StatusBar.setStyle({ style: Style.Dark });
   }
 
   async onLogin() {

@@ -9,6 +9,10 @@
   display: flex;
   flex-direction: column;
   height: 90vh;
+  padding-bottom: env(
+    safe-area-inset-bottom,
+    16px
+  ); /* Fallback for older browsers */
 }
 
 ion-content {

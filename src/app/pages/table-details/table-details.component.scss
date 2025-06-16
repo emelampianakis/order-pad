@@ -1,10 +1,9 @@
 .table-details-content {
-  --padding-top: 0;
   position: relative;
 
   ion-button.back-btn {
     position: absolute;
-    top: 16px;
+    top: calc(16px + env(safe-area-inset-top, 0));
     left: 16px;
     z-index: 1000;
   }
@@ -20,7 +19,7 @@
     color: black;
     position: relative;
     z-index: 2;
-    margin: 40px auto 0;
+    margin: calc(40px + env(safe-area-inset-top, 0)) auto 0;
     width: 50%;
     max-width: 500px;
     background: white;
@@ -74,11 +73,11 @@
     left: 0;
     right: 0;
     bottom: 0;
-    top: 100px; // distance from top of content to header bottom
+    top: calc(100px + env(safe-area-inset-top, 0));
     background: #e1eff4;
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
-    padding: 64px 16px 80px;
+    padding: 64px 16px calc(80px + env(safe-area-inset-bottom));
     overflow-y: auto;
     z-index: 1;
 
@@ -113,6 +112,7 @@
   ion-fab-button {
     --background: #9edbf7;
     --color: black;
+    margin-bottom: env(safe-area-inset-bottom);
   }
 
   .paid {
