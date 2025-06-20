@@ -1,8 +1,8 @@
 <div class="modal-wrapper">
   <ion-header>
     <ion-toolbar>
-      <ion-buttons mode="md" slot="start" *ngIf="this.breadcrumb.length > 0">
-        <ion-button (click)="back()">
+      <ion-buttons slot="start" *ngIf="breadcrumb.length > 0">
+        <ion-button (click)="back()" style="width: 40px; height: 40px">
           <ion-icon name="chevron-back-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -11,7 +11,11 @@
 
       <ion-buttons slot="end">
         <div style="position: relative">
-          <ion-button mode="md" class="cart-button" (click)="toggleCartView()">
+          <ion-button
+            class="cart-button"
+            (click)="toggleCartView()"
+            style="position: relative; width: 40px; height: 40px"
+          >
             <ion-icon [name]="cartToggleIcon"></ion-icon>
           </ion-button>
           <ion-badge
@@ -19,8 +23,6 @@
             color="danger"
             style="
               position: absolute;
-              top: -4px;
-              right: -4px;
               font-size: 10px;
               padding: 2px 6px;
               z-index: 10;
@@ -168,31 +170,33 @@
 
     <!-- Cart -->
     <div *ngIf="!loading && view === 'cart'" class="cart-container">
-      <div class="cart-item" *ngFor="let item of cart">
-        <div class="cart-item-details">
-          <div class="cart-item-title">{{ item.label || item.name }}</div>
-          <div class="cart-item-price">
-            {{ item.price | currency }} x {{ item.quantity }} =
-            <strong>{{ item.price * item.quantity | currency }}</strong>
+      <div class="cart-items-scroll">
+        <div class="cart-item" *ngFor="let item of cart">
+          <div class="cart-item-details">
+            <div class="cart-item-title">{{ item.label || item.name }}</div>
+            <div class="cart-item-price">
+              {{ item.price | currency }} x {{ item.quantity }} =
+              <strong>{{ item.price * item.quantity | currency }}</strong>
+            </div>
           </div>
-        </div>
 
-        <div class="cart-actions">
-          <ion-button
-            mode="md"
-            fill="clear"
-            (click)="decreaseQuantityCart(item)"
-            >-</ion-button
-          >
+          <div class="cart-actions">
+            <ion-button
+              mode="md"
+              fill="clear"
+              (click)="decreaseQuantityCart(item)"
+              >-</ion-button
+            >
 
-          <span>{{ item.quantity }}</span>
+            <span>{{ item.quantity }}</span>
 
-          <ion-button
-            mode="md"
-            fill="clear"
-            (click)="item.quantity = item.quantity + 1"
-            >+</ion-button
-          >
+            <ion-button
+              mode="md"
+              fill="clear"
+              (click)="item.quantity = item.quantity + 1"
+              >+</ion-button
+            >
+          </div>
         </div>
       </div>
 

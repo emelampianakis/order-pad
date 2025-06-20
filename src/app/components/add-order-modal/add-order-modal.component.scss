@@ -195,6 +195,12 @@ ion-textarea {
     --background: #e1eff4;
     color: black;
   }
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0;
 }
 
 .cart-item {
@@ -221,10 +227,13 @@ ion-textarea {
 }
 
 .cart-footer {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid #ccc;
+  padding: 16px;
 }
 
 .total-row {
@@ -249,4 +258,10 @@ ion-checkbox {
 
 ion-checkbox::part(container) {
   border: 2px solid grey;
+}
+
+.cart-items-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
 }

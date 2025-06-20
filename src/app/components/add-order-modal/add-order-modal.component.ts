@@ -197,7 +197,6 @@ export class AddOrderModalComponent {
 
     if (existing) {
       existing.quantity += qty;
-      // Optionally append notes
       if (this.productNote) {
         existing.notes = (existing.notes || "") + "\n" + this.productNote;
       }
@@ -209,8 +208,8 @@ export class AddOrderModalComponent {
       });
     }
 
-    // Reset note field after adding
     this.productNote = "";
+    this.productQuantities[product.id] = 1;
   }
 
   removeFromCart(item: any) {
