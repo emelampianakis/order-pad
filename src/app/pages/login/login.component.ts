@@ -40,7 +40,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private toastController: ToastController,
+    private toastCtrl: ToastController,
     private authService: AuthService,
     private loadingController: LoadingController
   ) {
@@ -91,7 +91,7 @@ export class LoginComponent {
   }
 
   private async showDangerToast(message: string) {
-    const toast = await this.toastController.create({
+    const toast = await this.toastCtrl.create({
       message,
       duration: 2000,
       position: "top",
@@ -101,7 +101,7 @@ export class LoginComponent {
   }
 
   private async showSuccessToast(message: string) {
-    const toast = await this.toastController.create({
+    const toast = await this.toastCtrl.create({
       message,
       duration: 2000,
       position: "top",

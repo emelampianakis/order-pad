@@ -93,7 +93,7 @@
               </div>
 
               <!-- Quantity Controls (Top Right) -->
-              <div class="quantity-add">
+              <div class="quantity-add" *ngIf="!prod.hasProductAttributes">
                 <ion-button
                   mode="md"
                   fill="clear"
@@ -119,18 +119,19 @@
               <div class="spacer"></div>
               <div class="product-actions">
                 <ion-button
-                  mode="md"
-                  class="primary-button"
-                  (click)="viewProduct(prod)"
-                >
-                  Details
-                </ion-button>
-                <ion-button
+                  *ngIf="!prod.hasProductAttributes"
                   mode="md"
                   class="primary-button"
                   (click)="addToCart(prod)"
                 >
                   Add
+                </ion-button>
+                <ion-button
+                  mode="md"
+                  class="primary-button"
+                  (click)="viewProduct(prod)"
+                >
+                  Details
                 </ion-button>
               </div>
             </div>
@@ -141,11 +142,90 @@
 
     <!-- Product Detail -->
     <div *ngIf="!loading && view === 'product-details'" class="product-detail">
-      <div class="product-label">{{ selectedProduct?.label }}</div>
+      <div class="product-label-quantity">
+        <span class="product-label">{{ selectedProduct?.label }}</span>
+
+        <div class="quantity-controls">
+          <ion-button
+            mode="md"
+            fill="clear"
+            (click)="decreaseQuantity(selectedProduct)"
+            >-</ion-button
+          >
+          <ion-input
+            [value]="getQuantity(selectedProduct)"
+            readonly
+            style="width: 40px; text-align: center"
+          ></ion-input>
+          <ion-button
+            mode="md"
+            fill="clear"
+            (click)="increaseQuantity(selectedProduct)"
+            >+</ion-button
+          >
+        </div>
+      </div>
       <div class="product-description">{{ selectedProduct?.description }}</div>
       <div class="product-price">
-        {{ selectedProduct?.price | currency }}
+        {{ getSelectedProductTotalPrice() | currency }}
       </div>
+
+      <ion-list
+        class="extras-list"
+        *ngIf="selectedProduct?.productAttributeCategories?.length > 0"
+      >
+        <div *ngFor="let cat of selectedProduct.productAttributeCategories">
+          <h3>
+            {{ cat.attributeCategory.label }}
+            <span *ngIf="isAttributeCategoryRequired(cat)"> *</span>
+          </h3>
+          <!-- Single select -->
+          <ion-radio-group
+            mode="md"
+            *ngIf="cat.attributeCategory.selectedValueType === 'single'"
+            [(ngModel)]="selectedAttributes[cat.attributeCategory.id]"
+            (ionChange)="onAttributeChange()"
+          >
+            <ion-item *ngFor="let attr of cat.attributeCategory.attributes">
+              <ion-radio
+                [value]="attr.id"
+                justify="space-between"
+                slot="end"
+              ></ion-radio>
+              {{ attr.attribute.label }}:
+              {{ attr.price ? (attr.price | currency) : "Free" }}
+            </ion-item>
+          </ion-radio-group>
+
+          <!-- Multi select -->
+          <ion-list
+            *ngIf="cat.attributeCategory.selectedValueType !== 'single'"
+          >
+            <ion-item *ngFor="let attr of cat.attributeCategory.attributes">
+              <ion-checkbox
+                mode="md"
+                slot="end"
+                justify="space-between"
+                [checked]="
+                  (
+                    selectedAttributesMulti[cat.attributeCategory.id] || []
+                  ).includes(attr.id)
+                "
+                (ionChange)="
+                  toggleMultiAttribute(
+                    cat.attributeCategory.id,
+                    attr.id,
+                    $event.detail.checked
+                  );
+                  onAttributeChange()
+                "
+              ></ion-checkbox>
+              {{ attr.attribute.label }}:
+              {{ attr.price ? (attr.price | currency) : "Free" }}
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-list>
 
       <ion-textarea
         mode="md"
@@ -159,6 +239,10 @@
       ></ion-textarea>
 
       <ion-button
+        [disabled]="
+          selectedProduct.productAttributeCategories?.length > 0 &&
+          !allAttributesSelected
+        "
         class="primary-button"
         mode="md"
         expand="block"
@@ -174,9 +258,23 @@
         <div class="cart-item" *ngFor="let item of cart">
           <div class="cart-item-details">
             <div class="cart-item-title">{{ item.label || item.name }}</div>
+
+            <!-- Display attribute labels -->
+            <div
+              *ngIf="item.productAttributes?.length > 0"
+              class="cart-item-attributes"
+            >
+              <small style="display: flex; flex-direction: column">
+                <span *ngFor="let attr of item.productAttributes">
+                  {{ attr.attribute.label }}:
+                  {{ attr.price ? (attr.price | currency) : "Free" }}
+                </span>
+              </small>
+            </div>
+
             <div class="cart-item-price">
               {{ item.price | currency }} x {{ item.quantity }} =
-              <strong>{{ item.price * item.quantity | currency }}</strong>
+              <strong>{{ getItemTotal(item) | currency }}</strong>
             </div>
           </div>
 
@@ -187,9 +285,7 @@
               (click)="decreaseQuantityCart(item)"
               >-</ion-button
             >
-
             <span>{{ item.quantity }}</span>
-
             <ion-button
               mode="md"
               fill="clear"

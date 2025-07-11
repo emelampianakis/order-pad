@@ -67,9 +67,27 @@
         <ion-item *ngFor="let product of order.orderProducts">
           <ion-label>
             <div class="product-name">{{ product.label }}</div>
+
+            <!-- Attributes -->
+            <div
+              class="product-attributes"
+              *ngIf="product.orderProductAttributes?.length"
+            >
+              <small>
+                <div
+                  *ngFor="let attr of product.orderProductAttributes"
+                  class="attr-row"
+                >
+                  {{ attr.orderAttribute.label }}:
+                  {{ attr.price ? (attr.price | currency) : "Free" }}
+                </div>
+              </small>
+            </div>
+
+            <!-- Total price -->
             <div class="product-meta">
-              Quantity: {{ product.quantity }} &nbsp;|&nbsp; Price:
-              {{ product.price | currency }}
+              Quantity: {{ product.quantity }} &nbsp;|&nbsp; Total:
+              {{ getOrderProductTotal(product) | currency }}
             </div>
           </ion-label>
         </ion-item>

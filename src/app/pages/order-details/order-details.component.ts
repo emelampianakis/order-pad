@@ -131,4 +131,14 @@ export class OrderDetailsComponent implements OnInit {
   getStatusClassName(status: string): string {
     return status.replace(/ /g, "");
   }
+
+  getOrderProductTotal(product: any): number {
+    const basePrice = product.price || 0;
+    const attrPrice =
+      product.orderProductAttributes?.reduce(
+        (sum: number, attr: any) => sum + (attr.price ?? 0),
+        0
+      ) || 0;
+    return (basePrice + attrPrice) * (product.quantity || 1);
+  }
 }
