@@ -322,12 +322,7 @@
         </ion-item>
 
         <ion-item lines="none">
-          <ion-checkbox
-            [checked]="isPaid"
-            (ionChange)="isPaid = $event.detail.checked"
-            slot="end"
-            >Paid</ion-checkbox
-          >
+          <ion-checkbox [(ngModel)]="isPaid" slot="end"> Paid </ion-checkbox>
         </ion-item>
 
         <ion-button
